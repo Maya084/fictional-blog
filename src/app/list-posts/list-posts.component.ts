@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { IPost } from 'src/app/models/interfaces';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
@@ -11,15 +11,28 @@ import { Router } from '@angular/router';
 export class ListPostsComponent implements OnInit {
 
   posts: IPost[] = [];
+  @Input() userID: any;
 
   constructor(
     private dataService: DataService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.dataService.getPosts()
-      .subscribe(data => this.posts = data);
+    
+        this.dataService.getPosts().subscribe(
+          data=>{
+            if ((typeof this.userID) === "undefined") 
+            {
+              this.posts = data;
+            }
+            else
+            {
+              this.posts = data.filter(i => i.userId === this.userID);
+            }
+          }
+        )
+    
   }
 
   openPost(post: IPost) {

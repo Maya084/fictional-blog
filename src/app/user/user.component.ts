@@ -11,6 +11,7 @@ import { IUser } from '../models/interfaces';
 export class UserComponent implements OnInit {
 
   userID: any;
+  hasPosts = true;
   user: IUser = {} as IUser;
   constructor(private activatedRoute: ActivatedRoute,
     private service:DataService
@@ -22,8 +23,18 @@ export class UserComponent implements OnInit {
       const res = data.find(el => el.id === this.userID);
       this.user = res as IUser;
     });
+
+    this.service.getPosts().subscribe(
+      data=> {
+        const res = data.find(a => a.userId === this.userID)
+        console.log(res);
+        if((typeof res) === "undefined") {this.hasPosts = false;
+        console.log(this.hasPosts)}
+      }
+
+    )
+    console.log(this.hasPosts);
     
-    // this.user = pom;
     
   }
 
