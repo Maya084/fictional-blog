@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { IUser } from 'src/assets/interfaces';
+import { Router } from '@angular/router';
+import { IUser } from 'src/app/models/interfaces';
 import { DataService } from '../data.service';
 
 @Component({
@@ -8,13 +9,24 @@ import { DataService } from '../data.service';
   styleUrls: ['./list-users.component.scss']
 })
 export class ListUsersComponent implements OnInit {
+
   users : IUser[] = [];
-  getUsersURL = "https://jsonplaceholder.typicode.com/users";
-  constructor(private data_servis:DataService) { }
+
+  constructor(
+    private dataServ: DataService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
 
-    this.data_servis.getUsers(this.getUsersURL).subscribe(data=> this.users= data)
+    this.dataServ.getUsers()
+      .subscribe(data => this.users = data)
+
+  }
+
+  openUserDetails(userID:any)
+  {
+    this.router.navigate(["/users", userID]);
 
   }
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IComment, IPost, IUser } from 'src/assets/interfaces';
+import { IComment, IPost, IUser } from 'src/app/models/interfaces';
+import { URLS } from 'src/assets/constants';
 
 @Injectable({
   providedIn: 'root'
@@ -10,19 +11,16 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(url: string): Observable<IPost[]>
-  {
-    return this.http.get<IPost[]>(url);
+  getPosts(): Observable<IPost[]> {
+    return this.http.get<IPost[]>(URLS.POSTS);
   }
 
-  getUsers(url: string): Observable<IUser[]>
-  {
-    return this.http.get<IUser[]>(url);
+  getUsers(): Observable<IUser[]> {
+    return this.http.get<IUser[]>(URLS.USERS);
   }
 
-  getComments(url: string): Observable<IComment[]>
-  {
-    return this.http.get<IComment[]>(url);
+  getComments(): Observable<IComment[]> {
+    return this.http.get<IComment[]>(URLS.COMMENTS);
   }
 
 }

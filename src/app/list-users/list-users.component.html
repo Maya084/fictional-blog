@@ -1,6 +1,13 @@
-<h2>List users</h2>
+<div class="users">
 
-<div *ngFor="let user of users">
-<h3> {{user.username}}</h3>
+  <h2>List users</h2>
+
+  <div *ngFor="let user of users">
+
+    <div class="user">
+      <h3 (click)="openUserDetails(user.id)"> {{user?.username}}</h3>
+    </div>
+
+  </div>
 
 </div>

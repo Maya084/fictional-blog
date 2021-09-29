@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IPost } from 'src/assets/interfaces';
+import { IPost } from 'src/app/models/interfaces';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 
@@ -11,15 +11,15 @@ import { Router } from '@angular/router';
 export class ListPostsComponent implements OnInit {
 
   posts: IPost[] = [];
-  private getPostsURL = "https://jsonplaceholder.typicode.com/posts";
 
-  constructor(private data_servis: DataService, private router: Router) {
-
-  }
+  constructor(
+    private dataService: DataService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-
-    this.data_servis.getPosts(this.getPostsURL).subscribe(data => this.posts = data);
+    this.dataService.getPosts()
+      .subscribe(data => this.posts = data);
   }
 
   openPost(post: IPost) {

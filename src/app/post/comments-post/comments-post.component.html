@@ -1,3 +1,11 @@
-<p>
-  comments-post works!
-</p>
+
+<div *ngFor="let comment of comments" class="comment">
+  
+  <div>
+    <p>{{comment.name}}</p>
+    <h5>{{comment.body}}</h5>
+    <hr>
+  </div>
+  
+
+</div>
