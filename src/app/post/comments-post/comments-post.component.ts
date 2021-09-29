@@ -10,6 +10,7 @@ export class CommentsPostComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('Init Comment Post');
   }
 
 }
