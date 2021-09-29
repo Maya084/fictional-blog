@@ -7,8 +7,6 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { CommentsPostComponent } from './post/comments-post/comments-post.component';
 
-
-
 @NgModule({
   declarations: [	
     AppComponent,
