@@ -3,10 +3,10 @@
 <h3>{{user.email}}</h3>
 <p>Address: {{user.address?.street}}, {{user.address?.suite}}, {{user.address?.city}}</p>
 <p>Company: {{user.company?.name}}</p>
-<a href="{{user.website}}">{{user.website}}</a>
+<p style="color:darkslateblue">{{user.website}}</p>
 
 <hr>
 
-<app-list-posts [userID]="user.id"></app-list-posts>
+<app-list-posts></app-list-posts>
 
 

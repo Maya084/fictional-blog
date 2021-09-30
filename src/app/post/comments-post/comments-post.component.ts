@@ -1,6 +1,7 @@
-import { Component, Input, OnInit} from '@angular/core';
-import { DataService } from 'src/app/data.service';
+import { AfterViewInit, Component, Input, OnInit} from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
 import { IComment } from 'src/app/models/interfaces';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-comments-post',
@@ -8,26 +9,21 @@ import { IComment } from 'src/app/models/interfaces';
   styleUrls: ['./comments-post.component.scss']
 })
 export class CommentsPostComponent implements OnInit {
-  @Input() postID: any;
+  
+  postID: any;
   comments: IComment[] = [];
 
-  constructor(private dataServ: DataService) { }
+  constructor(private dataServ: DataService,
+    private commentsActivatedRoute: ActivatedRoute
+    ) { }
+
   
-
   ngOnInit() {
-    this.dataServ.getComments().subscribe(data => {
-      let allComments: IComment[] = data;
-      this.comments = allComments.filter(comm => comm.postId === this.postID);
-      
-    });
-
-
-  }
-
-
-
-
-
+    this.postID = Number(this.commentsActivatedRoute.snapshot.params?.postID);
+    this.dataServ.getCommentsById(this.postID)
+    .subscribe(data => this.comments = data);
+    }
+  
 
 
 }

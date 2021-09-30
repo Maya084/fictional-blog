@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/models/interfaces';
-import { DataService } from '../data.service';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-list-users',
@@ -10,7 +10,7 @@ import { DataService } from '../data.service';
 })
 export class ListUsersComponent implements OnInit {
 
-  users : IUser[] = [];
+  users: IUser[] = [];
 
   constructor(
     private dataServ: DataService,
@@ -18,16 +18,13 @@ export class ListUsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.dataServ.getUsers()
       .subscribe(data => this.users = data)
 
   }
 
-  openUserDetails(userID:any)
-  {
+  openUserDetails(userID: any) {
     this.router.navigate(["/users", userID]);
-
   }
 
 }
