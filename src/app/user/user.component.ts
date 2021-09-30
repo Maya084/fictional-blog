@@ -25,19 +25,12 @@ export class UserComponent implements OnInit {
     });
 
     this.service.getPosts().subscribe(
-      data=> {
+      data => {
         const res = data.find(a => a.userId === this.userID)
-        console.log(res);
         if((typeof res) === "undefined") {this.hasPosts = false;
         console.log(this.hasPosts)}
       }
-
-    )
-    console.log(this.hasPosts);
-    
-    
+    );
   }
-
-
 
 }
