@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/models/interfaces';
 import { DataService } from '../services/data.service';
@@ -14,8 +15,11 @@ export class ListUsersComponent implements OnInit {
 
   constructor(
     private dataServ: DataService,
-    private router: Router
-  ) { }
+    private router: Router, 
+    private titleService: Title
+  ) { 
+    this.titleService.setTitle("Users");
+  }
 
   ngOnInit() {
     this.dataServ.getUsers();

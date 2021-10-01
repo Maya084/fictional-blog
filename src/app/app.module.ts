@@ -5,18 +5,21 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommentsPostComponent } from './post/comments-post/comments-post.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
+import { ExamplesAngularComponent } from './examples-material/examples-angular.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [	
+  declarations: [
     AppComponent,
     ...routingComponents,
     CommentsPostComponent,
-    ListUsersComponent
+    ListUsersComponent,
+    ExamplesAngularComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +27,9 @@ import { MaterialModule } from './material.module';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialModule 
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

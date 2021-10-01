@@ -1,0 +1,30 @@
+.flex-grid {
+  display: flex;
+  justify-content: flex-start;
+  
+
+  & .col {
+    // flex: 1;
+    margin-left: 3rem;
+
+    & .mat-icon {
+      transform: scale(2);
+      margin-top: 1rem;
+
+    }
+
+    & .comment-title {
+      font-weight: bold;
+    }
+
+    & .comment-body {
+
+      color: gray;
+
+      & .comment-email {
+        color: black !important;
+      }
+    }
+
+  }
+}

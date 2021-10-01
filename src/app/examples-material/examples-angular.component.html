@@ -1,0 +1,192 @@
+<div class="proba-material">
+  <button mat-raised-button matBadge="1" matBadgePosition="after" matBadgeSize="large" matBadgeColor="primary">
+    badge=hehe, position=after, side=large, color=primary </button>
+
+  <hr>
+
+  <mat-card>
+    <mat-card-title>Title</mat-card-title>
+    <mat-card-subtitle>subtitle</mat-card-subtitle>
+    <div class="flex-grid">
+      <mat-card class="col">
+        <mat-card-title>New mat card</mat-card-title>
+        <mat-card-subtitle>second subtitle</mat-card-subtitle>
+      </mat-card>
+      <mat-card class="col">
+        <mat-card-title>New mat card </mat-card-title>
+        <mat-card-subtitle>second subtitle</mat-card-subtitle>
+      </mat-card>
+      <mat-card class="col">
+        <mat-card-title>New mat card</mat-card-title>
+        <mat-card-subtitle>second subtitle</mat-card-subtitle>
+      </mat-card>
+    </div>
+    <p>first card text</p>
+    <mat-card-actions>actions</mat-card-actions>
+    <mat-card-footer>footer<br>
+      <mat-progress-bar mode="determinate"></mat-progress-bar>
+    </mat-card-footer>
+  </mat-card>
+  <hr>
+  <mat-chip-list aria-label="Fish selection">
+    <mat-chip>One fish <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button></mat-chip>
+    <mat-chip> Two fish <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button> </mat-chip>
+    <mat-chip color="primary" selected>Primary fish <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button></mat-chip>
+    <mat-chip color="accent" selected>Accent fish <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button></mat-chip>
+  </mat-chip-list>
+
+
+  <hr>
+  <mat-form-field appearance="fill">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [rangePicker]="picker" color="warn">
+      <input matStartDate placeholder="Start date">
+      <input matEndDate placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker color="warn"></mat-date-range-picker>
+  </mat-form-field>
+
+  <hr>
+  <h1> expansion panel</h1>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>Header</mat-expansion-panel-header>
+    <mat-panel-description>Description</mat-panel-description>
+    <div class="flex-grid">
+      <mat-card class="col">
+        <mat-card-title>title card</mat-card-title>
+        <mat-card-content>
+          <p>text text text text text text text text text text text text text text text text text text </p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="col">
+        <mat-card-title>title card</mat-card-title>
+        <mat-card-content>
+          <p>text text text text text text text text text text text text text text text text text text </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </mat-expansion-panel>
+
+  <hr>
+  <h1> form field</h1>
+  <div class="flex-grid">
+    <div class="row">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>simple Input</mat-label>
+          <input matInput>
+          <mat-icon> account_circle</mat-icon>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Select options</mat-label>
+          <mat-select>
+            <mat-option value="1">First option</mat-option>
+            <mat-option value="2">Second option</mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Textarea</mat-label>
+          <textarea matInput></textarea>
+        </mat-form-field>
+
+      </p>
+    </div>
+    <div class="row">
+      <h3>appearance change:</h3>
+
+      <p>
+        <mat-form-field appearance="legacy">
+          <mat-label>Legacy form field</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="standard">
+          <mat-label>Standard form field</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </p>
+    </div>
+    <div class="row">
+      <p>
+        <mat-form-field appearance="fill">
+          <mat-label>Fill form field</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field appearance="outline">
+          <mat-label>Outline form field</mat-label>
+          <input matInput placeholder="Placeholder">
+          <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+          <mat-hint>Hint</mat-hint>
+        </mat-form-field>
+      </p>
+    </div>
+  </div>
+
+<h2>form field 2</h2>
+<div class="example-container">
+  <form [formGroup]="options">
+    <mat-checkbox [formControl]="hideRequiredControl">Hide required marker</mat-checkbox>
+    <div>
+      <label>Float label: </label>
+      <mat-radio-group [formControl]="floatLabelControl">
+        <mat-radio-button value="auto">Auto</mat-radio-button>
+        <mat-radio-button value="always">Always</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <mat-form-field appearance="fill"
+        [hideRequiredMarker]="hideRequiredControl.value"
+        [floatLabel]="floatLabelControl.value">
+      <input matInput placeholder="Simple placeholder" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" [floatLabel]="floatLabelControl.value">
+      <mat-label>Both a label and a placeholder</mat-label>
+      <input matInput placeholder="Simple placeholder">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill"
+        [hideRequiredMarker]="hideRequiredControl.value"
+        [floatLabel]="floatLabelControl.value">
+      <mat-select required>
+        <mat-option>-- None --</mat-option>
+        <mat-option value="option">Option</mat-option>
+      </mat-select>
+      <mat-label><mat-icon>favorite</mat-icon> <b> Fancy</b> <i> label</i></mat-label>
+    </mat-form-field>
+  </form>
+</div>
+<hr>
+<h1> menu</h1>
+<button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item>Item 1</button>
+  <button mat-menu-item>Item 2</button>
+</mat-menu>
+
+<mat-spinner mode="determinate" value="60" color="accent">  </mat-spinner>
+
+</div>

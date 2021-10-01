@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-user',
@@ -16,13 +17,17 @@ export class UserComponent implements OnInit {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private service: DataService
-  ) { }
+    private service: DataService,
+    private titleService: Title
+  ) { 
+    
+  }
 
   ngOnInit(): void {
     this.userID = Number(this.activatedRoute.snapshot.paramMap.get('userID'));
     this.service.getUserById(this.userID).subscribe(data => {
       this.user = data;
+      this.titleService.setTitle(String(this.user.name));
     });
 
     this.service.getPosts();

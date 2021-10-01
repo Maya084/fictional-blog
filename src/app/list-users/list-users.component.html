@@ -1,13 +1,12 @@
-<div class="users">
+<div class="users-container">
 
   <h2>List users</h2>
 
-  <div *ngFor="let user of users">
+  <mat-list *ngFor="let user of users">
+    <mat-list-item (click)="openUserDetails(user.id)">
+      {{user?.name}}
+    </mat-list-item>
+  </mat-list>
 
-    <div class="user">
-      <h3 (click)="openUserDetails(user.id)"> {{user?.username}}</h3>
-    </div>
-
-  </div>
 
 </div>

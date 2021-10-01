@@ -2,23 +2,22 @@
   <h2> List posts</h2>
   <div class="posts">
 
-    <mat-card class="post-card" *ngFor="let post of posts">
+    <mat-card class="post-card" *ngFor="let post of posts; index as i; ">
       <mat-card-header>
         <mat-card-title>{{post.title}}</mat-card-title>
-        <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        <mat-card-subtitle routerLink="/users/{{post.userId}}">{{users[post.userId - 1].name}}</mat-card-subtitle>
       </mat-card-header>
-      <img mat-card-image src="https://media.wired.com/photos/5d8aab8bef84070009028d31/master/pass/Plant-Music-1162975190.jpg" alt="Photo of a Shiba Inu">
+      <img mat-card-image src="{{photos[i].url}}" alt="Photo of a Shiba Inu">
       <mat-card-content>
         <p>
-          {{post.body.substring(0,20)}}...
+          {{post.body}}...
         </p>
       </mat-card-content>
       <mat-card-actions>
         <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
           <mat-icon>favorite</mat-icon>
         </button>
-        <button mat-stroked-button
-          [routerLink]="['/posts', post.id]">READ MORE</button>
+        <button mat-stroked-button [routerLink]="['/posts', post.id]">READ MORE</button>
       </mat-card-actions>
 
     </mat-card>

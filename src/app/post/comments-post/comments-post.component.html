@@ -1,11 +1,16 @@
-
 <div *ngFor="let comment of comments" class="comment">
-  
-  <div>
-    <p>{{comment.name}}</p>
-    <h5>{{comment.body}}</h5>
-    <hr>
-  </div>
-  
+
+  <mat-card class="flex-grid">
+    <div class="col">
+      <mat-icon color="primary"> account_circle</mat-icon>
+    </div>
+    <div class="col comment">
+      <p class="comment-title"> {{comment.name}} </p>
+      <p class="comment-body"> <span class="comment-email">{{comment.email}}</span> - {{comment.body}}</p>
+    </div>
+
+  </mat-card>
+  <br>
+
 
 </div>

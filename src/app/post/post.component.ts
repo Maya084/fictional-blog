@@ -3,6 +3,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -18,7 +19,8 @@ export class PostComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private postService: DataService
+    private postService: DataService,
+    private titleService:Title
   ) { }
 
   ngOnInit(): void {
@@ -26,6 +28,7 @@ export class PostComponent implements OnInit, OnDestroy {
     if (Number.isNaN(id)) { id = -1; }
     this.postService.getPostById(id).subscribe(data => {
       this.post = data;
+      this.titleService.setTitle(String(data.title));
       this.postService.getUserById(this.post.userId).subscribe(data2 =>
         this.user = data2)
     });
