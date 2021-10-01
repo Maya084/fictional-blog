@@ -1,5 +1,25 @@
-<h1 style="text-align: center; color:darkslateblue">Maja Blog</h1>
-<button routerLink="/posts"> Posts</button>
-<button routerLink="/users">Users</button>
+<mat-drawer-container class="sidenav-container" autosize>
+  <mat-drawer #drawer class="sidenav-drawer" mode="push">
+    <mat-list>
+      <mat-list-item routerLink="/posts" routerLinkActive="active">Posts</mat-list-item>
+      <mat-list-item routerLink="/users" routerLinkActive="active">Users</mat-list-item>
+    </mat-list>
+  </mat-drawer>
 
-<router-outlet></router-outlet>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="drawer.toggle()" class="example-icon"
+      aria-label="Example icon-button with menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Maja Blog</span>
+    <span class="nav-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>info</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <div class="sidenav-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-drawer-container>

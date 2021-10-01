@@ -6,7 +6,6 @@ import { PostComponent } from './post/post.component';
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
-  
   {path: 'posts', component: ListPostsComponent},
   {path: 'posts/:postID', component: PostComponent},
   {path: 'users', component:  ListUsersComponent},

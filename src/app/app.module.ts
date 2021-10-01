@@ -8,6 +8,8 @@ import { AppComponent } from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import { CommentsPostComponent } from './post/comments-post/comments-post.component';
 import { ListUsersComponent } from './list-users/list-users.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [	
@@ -20,7 +22,9 @@ import { ListUsersComponent } from './list-users/list-users.component';
     BrowserModule,
     CommonModule,
     AppRoutingModule,
-    HttpClientModule, 
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule 
   ],
   providers: [],
   bootstrap: [AppComponent]

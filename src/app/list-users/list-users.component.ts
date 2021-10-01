@@ -18,8 +18,8 @@ export class ListUsersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.dataServ.getUsers()
-      .subscribe(data => this.users = data)
+    this.dataServ.getUsers();
+    this.dataServ.users$.subscribe(data=> this.users = data);
 
   }
 

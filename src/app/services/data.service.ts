@@ -10,9 +10,13 @@ import { URLS } from 'src/assets/constants';
 })
 export class DataService {
 
-  private hasRequested = false;
+  private hasRequestedPosts = false;
+  private hasRequestedUsers = false;
   private postsSubs = new BehaviorSubject<IPost[]>([]);
   posts$ = this.postsSubs.asObservable();
+
+  private usersSubs = new BehaviorSubject<IUser[]>([]);
+  users$ = this.usersSubs.asObservable();
 
   constructor(private http: HttpClient) { }
 
@@ -23,10 +27,10 @@ export class DataService {
 
   getPosts(): void {
     if (
-      this.hasRequested &&
+      this.hasRequestedPosts &&
       this.postsSubs.value.length !== 0
     ) { return; }
-    this.hasRequested = true;
+    this.hasRequestedPosts = true;
 
     this.http.get<IPost[]>(URLS.POSTS)
       .pipe(
@@ -35,23 +39,23 @@ export class DataService {
           return throwError(err)
         })
       ).subscribe();
-
     // setTimeout(() => {
     //   this.checkPostsForUpdates();
     // }, 5000);
   }
 
+  getUsers(): void {
+    if (this.hasRequestedUsers && this.postsSubs.value.length != 0) { return; }
+    this.hasRequestedUsers = true;
+
+    this.http.get<IUser[]>(URLS.USERS)
+      .pipe(
+        tap(data => this.usersSubs.next(data)),
+        catchError(err => { return throwError(err) })).subscribe();
+  }
+
   getPostById(postId: number): Observable<IPost> {
     return this.http.get<IPost>(`${URLS.POSTS}/${postId}`);
-
-  }
-
-  getUsers(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(URLS.USERS);
-  }
-
-  getComments(): Observable<IComment[]> {
-    return this.http.get<IComment[]>(URLS.COMMENTS);
   }
 
   getCommentsById(postId: number): Observable<IComment[]> {

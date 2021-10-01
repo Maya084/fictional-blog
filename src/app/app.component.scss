@@ -1,0 +1,25 @@
+.sidenav-container {
+  min-height: 100%;
+
+  & .sidenav-drawer {
+    padding-top: 64px;
+    min-width: 250px;
+
+    & .mat-list {
+      cursor: pointer;
+
+      & .mat-list-item.active {
+        background: #3f51b5;
+        color: #fff;
+      }
+    }
+  }
+
+  & .sidenav-content {
+    margin-top: 18px;
+  }
+}
+
+.nav-spacer {
+  flex: auto;
+}
