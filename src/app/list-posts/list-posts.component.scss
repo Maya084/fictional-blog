@@ -12,8 +12,13 @@ h2 {
     & .mat-card-title {
       height: 100px;
     }
+  }
 
-    & .mat-card-subtitle:hover {
+  & .mat-card-subtitle {
+    display: flex;
+    align-items: center;
+
+    &:hover {
       cursor: pointer;
     }
   }
@@ -27,9 +32,11 @@ h2 {
     & .mat-card-content {
 
       & p {
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }

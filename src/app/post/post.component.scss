@@ -1,12 +1,23 @@
-.post
-{
-    width: 70%;
-    margin-left: auto;
-    margin-right: auto;
+.post {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+
+  & div {
+    padding-bottom: 1rem;
+  }
+
+  & p {
+    padding-bottom: 1rem;
+  }
+
+  & h2 {
+    padding-top: 1rem;
+  }
 }
 
-.author:hover
-{
-cursor: pointer;
-color: #3f51b5;
+.author:hover {
+  cursor: pointer;
+  color: #3f51b5;
+
 }

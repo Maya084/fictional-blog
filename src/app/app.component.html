@@ -1,9 +1,9 @@
 <mat-drawer-container class="sidenav-container" autosize>
   <mat-drawer #drawer class="sidenav-drawer" mode="push">
     <mat-list (click)="drawer.close()">
-      <mat-list-item routerLink="/posts" routerLinkActive="active">Posts</mat-list-item>
-      <mat-list-item routerLink="/users" routerLinkActive="active">Users</mat-list-item>
-      <mat-list-item routerLink="/material" routerLinkActive="active">Material</mat-list-item>
+      <mat-list-item matRipple routerLink="/posts" routerLinkActive="active">Posts</mat-list-item>
+      <mat-list-item matRipple routerLink="/users" routerLinkActive="active">Users</mat-list-item>
+      <mat-list-item matRipple routerLink="/material" routerLinkActive="active">Material</mat-list-item>
     </mat-list>
 
   </mat-drawer>

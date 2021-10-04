@@ -46,7 +46,7 @@ export class ListPostsComponent implements OnInit {
     this.dataService.photos$.subscribe(data =>
       this.photos = data);
 
-    
+
 
 
 
@@ -65,4 +65,30 @@ export class ListPostsComponent implements OnInit {
 
   }
 
+  likePost(postid: any) {
+
+    console.log(postid);
+    console.log(this.isLiked(postid));
+    if (!this.isLiked(postid)) {
+      console.log(`liked post with id: ${postid}`);
+      localStorage.setItem(String(postid), String(true));
+      // let heart = document.getElementsByClassName("heart-icon") as HTMLCollectionOf<HTMLElement>;
+      // heart[postid - 1].style.color = "#ff4081";
+    }
+    else {
+      console.log(`unliked post with id: ${postid}`);
+      localStorage.setItem(String(postid), String(false));
+      // let heart = document.getElementsByClassName("heart-icon") as HTMLCollectionOf<HTMLElement>;
+      // heart[postid - 1].style.color = "black";
+    }
+
+  }
+
+  isLiked(postid: any) {
+    let pom = localStorage.getItem(postid);
+    if (pom === null) { return false; }
+    else if (pom === "true") { return true; }
+    else { return false; }
+
+  }
 }

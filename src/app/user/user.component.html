@@ -1,12 +1,21 @@
-<h1>{{user.name}}</h1>
-<h5>@{{user.username}}</h5>
-<h3>{{user.email}}</h3>
-<p>Address: {{user.address?.street}}, {{user.address?.suite}}, {{user.address?.city}}</p>
-<p>Company: {{user.company?.name}}</p>
-<p style="color:darkslateblue">{{user.website}}</p>
+<div class="user-container">
+  <mat-card class="flex-box">
 
-<hr>
+    <div class="col">
+        <mat-icon> person</mat-icon>
+    </div>
+    <div class="col">
+
+      <p class="name">{{user.name}}</p>
+      <p class="username">@{{user.username}}</p>
+      <p class="email">{{user.email}}</p>
+      <p>Address: {{user.address?.street}}, {{user.address?.suite}}, {{user.address?.city}}</p>
+      <p>Company: {{user.company?.name}}</p>
+      <p color="primary">{{user.website}}</p>
+    </div>
+  </mat-card>
+  <mat-divider></mat-divider>
+</div>
+
 
 <app-list-posts></app-list-posts>
-
-
