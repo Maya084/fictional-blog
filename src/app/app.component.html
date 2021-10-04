@@ -15,16 +15,16 @@
     </button>
     <span>Maja Blog</span>
     <span class="nav-spacer"></span>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <button title="Info" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon>info</mat-icon>
+    </button>
+    <button title="Clear local storage" (click)="clearLocalStorage()" mat-icon-button class="example-icon"
+      aria-label="Example icon-button with share icon">
+      <mat-icon>clear</mat-icon>
     </button>
   </mat-toolbar>
 
   <div class="sidenav-content">
-
-   
-
-
     <router-outlet></router-outlet>
   </div>
 

@@ -6,3 +6,5 @@ export const URLS = {
     COMMENTS: rootUrl + 'comments',
     PHOTOS: rootUrl + 'photos'
 };
+
+export const LOCAL_STORAGE_KEY = "FavoritePosts" as string;

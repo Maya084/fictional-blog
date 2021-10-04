@@ -22,6 +22,7 @@ export class DataService {
   private photosSubs = new BehaviorSubject<IPhoto[]>([]);
   photos$ = this.photosSubs.asObservable();
 
+ 
 
   constructor(private http: HttpClient) { }
 
@@ -29,6 +30,11 @@ export class DataService {
   //   this.hasRequested = false;
   //   this.getPosts();
   // }
+
+  getLikes(): void
+  {
+
+  }
 
   getPosts(): void {
     if (
