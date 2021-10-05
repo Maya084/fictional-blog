@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { LOCAL_STORAGE_KEY } from 'src/assets/constants';
+import { isNil } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class LocalStorageService {
     this.getLocalStorage()
   }
 
-  saveToLocalStorage() {
+  saveToLocalStorage(): void {
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.getFavoriteValue()));
     } catch (error) {
@@ -22,7 +23,7 @@ export class LocalStorageService {
     }
   }
 
-  getLocalStorage() {
+  getLocalStorage(): void {
     try {
       let ls: string | null = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (!ls) {
@@ -32,38 +33,29 @@ export class LocalStorageService {
     } catch (error) {
       console.error(`Unable to get favorites from localStorage ex: ${error}`);
     }
-    
+
   }
 
   getFavoriteValue(): number[] {
     return this.favoritesSubs.value;
   }
 
-  favoritePost(postid: number) {
+  favoritePost(postid: number): void {
+    if (isNil(postid)) { return; }
     this.favoritesSubs.next([...this.getFavoriteValue(), postid]);
     this.saveToLocalStorage();
   }
 
-  unfavoritePost(postid: number) {
-
-    let favorites = this.favoritesSubs.getValue();
+  unfavoritePost(postid: number): void {
+    let favorites = [...this.favoritesSubs.getValue()];
     let index = favorites.indexOf(postid);
     favorites.splice(index, 1);
     this.favoritesSubs.next(favorites);
     this.saveToLocalStorage();
   }
 
-  isFavorite(postid: number) {
-    let favorites = this.favoritesSubs.getValue();
-    if (favorites.includes(postid))
-      return true;
-    else
-      return false;
+  isFavorite(postid: number): boolean {
+    return this.favoritesSubs.getValue().includes(postid)
   }
 
-  clearLocalStorage()
-  {
-    localStorage.clear();
-    location.reload();
-  }
 }

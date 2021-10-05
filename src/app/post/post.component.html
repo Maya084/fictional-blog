@@ -1,5 +1,7 @@
 <div class="post" *ngIf="!postNotFound;else notFoundTmpl">
-  <h1>{{ post.title }}</h1>
+  <h1>{{ post.title }}
+  </h1>
+  <app-favorite-post [postid]="postId"></app-favorite-post>
   <div> by: 
     <span class="author"  routerLink="/users/{{post.userId}}" color="primary">{{user.name}}</span>
   </div>

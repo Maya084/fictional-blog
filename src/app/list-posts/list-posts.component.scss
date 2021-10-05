@@ -2,15 +2,32 @@ h2 {
   margin-left: 10px;
 }
 
+:host ::ng-deep {
+  & .mat-card-header-text {
+    margin: 0;
+  }
+}
+
 .posts {
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 10px;
   padding: 10px;
 
-  & .mat-card-header {
-    & .mat-card-title {
-      height: 100px;
+  & .mat-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  & .card-column {
+    margin-top: 16px;
+  }
+
+  & .mat-card-header .mat-card-title {
+    &:hover {
+      cursor: pointer;
     }
   }
 
@@ -27,7 +44,7 @@ h2 {
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(0, 0, 0, 0.8);
     padding: 20px;
-    font-size: 30px;
+    
 
     & .mat-card-content {
 
@@ -44,6 +61,7 @@ h2 {
   & .mat-card-actions {
     display: flex;
     justify-content: space-between;
+    margin-bottom: 0 !important;
   }
 
 }

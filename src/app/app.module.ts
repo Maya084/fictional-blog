@@ -12,6 +12,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 import { ExamplesAngularComponent } from './examples-material/examples-angular.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FavoritePostComponent } from './list-posts/favorite-post/favorite-post.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ...routingComponents,
     CommentsPostComponent,
     ListUsersComponent,
-    ExamplesAngularComponent
+    ExamplesAngularComponent,
+    FavoritePostComponent
   ],
   imports: [
     BrowserModule,

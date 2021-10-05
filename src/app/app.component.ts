@@ -7,14 +7,8 @@ import { LocalStorageService } from './local-storage.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'blog';
 
-  constructor(private localStorageService: LocalStorageService) {
-
+  constructor() {
   }
-  clearLocalStorage() {
-this.localStorageService.clearLocalStorage();
-  }
-
 
 }

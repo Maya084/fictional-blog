@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
 import { Title } from '@angular/platform-browser';
+import { LocalStorageService } from '../local-storage.service';
+import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -13,6 +16,9 @@ import { Title } from '@angular/platform-browser';
 })
 export class PostComponent implements OnInit, OnDestroy {
 
+  private postSubs!: Subscription;
+
+  postId!: number;
   post: IPost = {} as IPost;
   postNotFound = false;
   user: IUser = {} as IUser;
@@ -20,22 +26,26 @@ export class PostComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private postService: DataService,
-    private titleService:Title
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
-    let id: number = Number(this.activatedRoute.snapshot.params?.postID);
-    if (Number.isNaN(id)) { id = -1; }
-    this.postService.getPostById(id).subscribe(data => {
-      this.post = data;
-      this.titleService.setTitle(String(data.title));
-      this.postService.getUserById(this.post.userId).subscribe(data2 =>
-        this.user = data2)
-    });
+    this.postId = Number(this.activatedRoute.snapshot.params?.postID);
+    if (Number.isNaN(this.postId)) { this.postId = -1; }
+    
+    this.postSubs = this.postService.getPostById(this.postId)
+      .pipe(
+        mergeMap(data => {
+          this.post = data;
+          this.titleService.setTitle(this.post.title);
 
+          return this.postService.getUserById(data.userId)
+        })
+      ).subscribe(user => this.user = user);
   }
 
   ngOnDestroy(): void {
+    this.postSubs?.unsubscribe();
   }
 
 }

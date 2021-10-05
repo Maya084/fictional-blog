@@ -12,6 +12,7 @@ const routes: Routes = [
   {path: 'users', component:  ListUsersComponent},
   {path: 'users/:userID', component: UserComponent},
   {path: 'material', component: ExamplesAngularComponent}, 
+  {path: 'favorites', component: ListPostsComponent}, 
   {path: '**', redirectTo: 'posts', pathMatch:'full'},
 ];
 
