@@ -14,7 +14,7 @@ import { each } from 'lodash';
 })
 export class ListPostsComponent implements OnInit, OnDestroy {
 
-  private subs = {} as {[key: string]: Subscription};
+  private subs = {} as { [key: string]: Subscription };
 
   posts: IPost[] = [];
   users: IUser[] = [];
@@ -34,7 +34,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.dataService.getPosts();
 
     this.subs.ls = this.localStorageService.favorites$
-    .subscribe(_ => this.subscribePosts())
+      .subscribe(_ => this.subscribePosts())
 
     this.dataService.getUsers();
     this.subs.users = this.dataService.users$
