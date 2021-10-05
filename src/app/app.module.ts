@@ -13,16 +13,18 @@ import { MaterialModule } from './material.module';
 import { ExamplesAngularComponent } from './examples-material/examples-angular.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoritePostComponent } from './list-posts/favorite-post/favorite-post.component';
+import { PaginationComponent } from './pagination/pagination.component';
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     ...routingComponents,
     CommentsPostComponent,
     ListUsersComponent,
     ExamplesAngularComponent,
-    FavoritePostComponent
-  ],
+    FavoritePostComponent,
+      PaginationComponent
+   ],
   imports: [
     BrowserModule,
     CommonModule,

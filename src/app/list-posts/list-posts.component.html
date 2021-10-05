@@ -1,11 +1,11 @@
 <div class="container post-container">
   <div class="posts">
-    <mat-card class="post-card" *ngFor="let post of posts; index as i; ">
+      <mat-card class="post-card" *ngFor="let post of posts; index as i; ">
       <mat-card-header>
         <mat-card-title [routerLink]="['/posts', post.id]">{{post.title}}</mat-card-title>
       </mat-card-header>
       <div class="card-column">
-        <img mat-card-image src="{{photos[i]?.url}}" alt="Photo of a Shiba Inu">
+        <img mat-card-image src="{{photos[i]?.url}}">
         <mat-card-content>
           <p>
             {{post.body}}...
@@ -22,4 +22,8 @@
       </div>
     </mat-card>
   </div>
+
+  <app-pagination *ngIf="onInitializePosts"
+    [total]="postTotal"
+    (onPageChange)="changePage($event)"></app-pagination>
 </div>

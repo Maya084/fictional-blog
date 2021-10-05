@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
-import { IComment, IPhoto, IPost, IUser } from 'src/app/models/interfaces';
+import { IComment, IPhoto, IPost, IPostPaginated, IUser } from 'src/app/models/interfaces';
 import { URLS } from 'src/assets/constants';
+import { range } from 'lodash';
+import * as _ from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class DataService {
   private photosSubs = new BehaviorSubject<IPhoto[]>([]);
   photos$ = this.photosSubs.asObservable();
 
- 
+
 
   constructor(private http: HttpClient) { }
 
@@ -31,9 +33,14 @@ export class DataService {
   //   this.getPosts();
   // }
 
-  getLikes(): void
-  {
-
+  getPaginatedPosts(page: number, limit = 10): IPostPaginated {
+    const postLists = [...this.postsSubs.value];
+    const result = postLists.slice((page - 1) * limit, page * limit);
+    return {
+      data: result,
+      page: page,
+      total: result.length
+    } as IPostPaginated;
   }
 
   getPosts(): void {
@@ -50,9 +57,7 @@ export class DataService {
           return throwError(err)
         })
       ).subscribe();
-    // setTimeout(() => {
-    //   this.checkPostsForUpdates();
-    // }, 5000);
+
   }
 
   getUsers(): void {

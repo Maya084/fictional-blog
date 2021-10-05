@@ -1,0 +1,22 @@
+<div class="pagination">
+  <button mat-mini-fab color="primary"
+    [disabled]="currentPage <= 1"
+    (click)="prevPage()"
+    aria-label="Left paginate icon">
+    <mat-icon>keyboard_arrow_left</mat-icon>
+  </button>
+  <div class="pages">
+    <button mat-mini-fab
+      *ngFor="let i of rangeNumbers"
+      (click)="selectPage(i)"
+      [attr.aria-label]="'Number paginate icon' + i">
+      {{i}}
+    </button>
+  </div>
+  <button mat-mini-fab color="primary"
+    [disabled]="currentPage >= total"
+    (click)="nextPage()"
+    aria-label="Right paginate icon">
+    <mat-icon>keyboard_arrow_right</mat-icon>
+  </button>
+</div>

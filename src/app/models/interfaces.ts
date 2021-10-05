@@ -43,6 +43,12 @@ export interface IPost {
     body: string;
 }
 
+export interface IPostPaginated {
+    data: IPost[];
+    page: number;
+    total: number;
+}
+
 export interface IPhoto {
     albumId: number;
     id: number;
