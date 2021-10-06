@@ -1,5 +1,5 @@
 <div class="container post-container">
-  <div class="posts">
+  <div class="posts" [ngClass]="{'isFavorites': isFavoriteUrl===true}">
       <mat-card class="post-card" *ngFor="let post of posts; index as i; ">
       <mat-card-header>
         <mat-card-title [routerLink]="['/posts', post.id]">{{post.title}}</mat-card-title>
@@ -24,6 +24,7 @@
   </div>
 
   <app-pagination *ngIf="onInitializePosts"
+    [page]="postPage"
     [total]="postTotal"
     (onPageChange)="changePage($event)"></app-pagination>
 </div>

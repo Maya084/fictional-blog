@@ -10,10 +10,13 @@ h2 {
 
 .posts {
 
+
+
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 10px;
   padding: 10px;
+  
 
   & .mat-card {
     display: flex;
@@ -63,5 +66,8 @@ h2 {
     justify-content: space-between;
     margin-bottom: 0 !important;
   }
-
+}
+.posts.isFavorites
+{
+  margin-bottom: 50px;
 }

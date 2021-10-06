@@ -9,6 +9,7 @@
     <button mat-mini-fab
       *ngFor="let i of rangeNumbers"
       (click)="selectPage(i)"
+      [ngClass]="{'active': i == currentPage}"
       [attr.aria-label]="'Number paginate icon' + i">
       {{i}}
     </button>

@@ -39,7 +39,7 @@ export class DataService {
     return {
       data: result,
       page: page,
-      total: result.length
+      total: Math.ceil(postLists.length / limit)
     } as IPostPaginated;
   }
 

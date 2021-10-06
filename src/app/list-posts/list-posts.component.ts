@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { LocalStorageService } from '../local-storage.service';
 import { Subscription } from 'rxjs';
-import { each, isNil } from 'lodash';
+import { each, includes, isNil } from 'lodash';
 
 @Component({
   selector: 'app-list-posts',
@@ -21,20 +21,29 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   onInitializePosts = false;
   postTotal!: number;
+  totalPost = 9;
   posts: IPost[] = [];
   users: IUser[] = [];
   photos: IPhoto[] = [];
+  isFavoriteUrl!:boolean;
 
   constructor(
     private dataService: DataService,
     private router: Router,
-    private listPostsActivatedRoute: ActivatedRoute,
+    private acRoute: ActivatedRoute,
     private titleService: Title,
     private localStorageService: LocalStorageService
   ) {
     this.titleService.setTitle("Home");
-    const id: number = +this.listPostsActivatedRoute?.snapshot?.params?.userID;
+    this.queryParams();
+  }
+  
+  queryParams() {
+    const id: number = +this.acRoute?.snapshot?.params?.userID;
     this.postId = isNaN(id) ? null : id;
+
+    const page = +this.acRoute.snapshot.queryParams?.page;
+    this.postPage = isNaN(page) ? 1 : page;
   }
 
   ngOnInit(): void {
@@ -56,14 +65,16 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     each(this.subs, el => el?.unsubscribe())
   }
 
-  subscribePosts() {
+  subscribePosts(): void {
     this.subs?.posts?.unsubscribe();
     this.subs.posts = this.dataService.posts$
       .subscribe(data => {
         if (data.length === 0) { return; }
 
-        if (isNil(this.postId)) {
-          const postObj = this.dataService.getPaginatedPosts(this.postPage, 9);
+        this.isFavoriteUrl = includes(this.router.url, 'favorites');
+
+        if (isNil(this.postId) && !this.isFavoriteUrl) {
+          const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
           this.posts = postObj.data;
           this.postPage = postObj.page;
           this.postTotal = postObj.total;
@@ -71,28 +82,23 @@ export class ListPostsComponent implements OnInit, OnDestroy {
           return;
         }
 
-        this.renderView(data)
+        this.posts = this.isFavoriteUrl
+          ? data.filter((el: IPost) => this.localStorageService.getFavoriteValue().includes(el.id))
+          : data.filter((el: IPost) => el.userId === this.postId);
       })
   }
 
-  renderView(data: IPost[]): void {
-    if (this.listPostsActivatedRoute?.snapshot?.routeConfig?.path === 'favorites') {
-      this.posts = data.filter((el: IPost) => this.localStorageService.getFavoriteValue().includes(el.id));
-    }
-    else {
-      this.posts = data.filter((el: IPost) => el.userId === this.postId);
-    }
-  }
-
-  openPost(post: IPost) {
+  openPost(post: IPost): void {
     this.router.navigate(['/posts', post.id]);
   }
 
-  changePage(page: any) {
+  changePage(page: any): void {
     this.postPage = page;
-    console.log('Change Page', page);
-    
-    // this.posts_paginated = [...this.posts.slice(3 * (page - 1), 3 * (page - 1) + 3)];
+    this.router.navigate(['/posts'], { queryParams: { page: this.postPage } });
+    const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
+    this.posts = postObj.data;
+    this.postPage = postObj.page;
+    this.postTotal = postObj.total;
   }
 
 }
