@@ -26,6 +26,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   users: IUser[] = [];
   photos: IPhoto[] = [];
   isFavoriteUrl!:boolean;
+  userSelected!: boolean;
 
   constructor(
     private dataService: DataService,
@@ -85,6 +86,9 @@ export class ListPostsComponent implements OnInit, OnDestroy {
         this.posts = this.isFavoriteUrl
           ? data.filter((el: IPost) => this.localStorageService.getFavoriteValue().includes(el.id))
           : data.filter((el: IPost) => el.userId === this.postId);
+
+        this.userSelected = !this.isFavoriteUrl;
+        console.log(this.userSelected, this.isFavoriteUrl);
       })
   }
 
