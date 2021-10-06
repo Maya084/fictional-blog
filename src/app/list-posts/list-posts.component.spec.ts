@@ -1,5 +1,7 @@
 /* tslint:disable:no-unused-variable */
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
 import { ListPostsComponent } from './list-posts.component';
 
 describe('ListPostsComponent', () => {
@@ -8,6 +10,10 @@ describe('ListPostsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [
+        HttpClientTestingModule,
+        RouterTestingModule
+      ],
       declarations: [ ListPostsComponent ]
     })
     .compileComponents();
@@ -22,5 +28,9 @@ describe('ListPostsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // it('test total posts per page', ()=>{
+  //   expect(component.totalPost).toEqual(9);
+  // });
 
 });

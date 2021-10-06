@@ -21,7 +21,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   onInitializePosts = false;
   postTotal!: number;
-  totalPost = 9;
+  totalPost = 6;
   posts: IPost[] = [];
   users: IUser[] = [];
   photos: IPhoto[] = [];

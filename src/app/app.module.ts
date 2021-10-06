@@ -23,7 +23,7 @@ import { PaginationComponent } from './pagination/pagination.component';
     ListUsersComponent,
     ExamplesAngularComponent,
     FavoritePostComponent,
-      PaginationComponent
+    PaginationComponent
    ],
   imports: [
     BrowserModule,
