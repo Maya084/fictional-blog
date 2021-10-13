@@ -4,7 +4,6 @@ import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { IComment, IPhoto, IPost, IPostPaginated, IUser } from 'src/app/models/interfaces';
 import { URLS } from 'src/assets/constants';
-import { range } from 'lodash';
 import * as _ from 'lodash';
 
 @Injectable({
@@ -26,7 +25,9 @@ export class DataService {
 
 
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+
+  }
 
   // checkPostsForUpdates() {
   //   this.hasRequested = false;
@@ -67,23 +68,24 @@ export class DataService {
     this.http.get<IUser[]>(URLS.USERS)
       .pipe(
         tap(data => this.usersSubs.next(data)),
-        catchError(err => { return throwError(err) })).subscribe();
+        catchError(err => { return throwError(err) }))
+      .subscribe();
   }
 
   getPostById(postId: number): Observable<IPost> {
-    return this.http.get<IPost>(`${URLS.POSTS}/${postId}`);
+    return this.http.get<IPost>(`${URLS.POSTS}/${postId}`).pipe(
+      catchError(err => throwError("Error the post ID doesn't exist")));
   }
 
   getCommentsById(postId: number): Observable<IComment[]> {
-    return this.http.get<IComment[]>(`${URLS.POSTS}/${postId}/comments`);
+    return this.http.get<IComment[]>(`${URLS.POSTS}/${postId}/comments`).pipe(
+      catchError(err => throwError("Error the comment ID doesn't exist")));
   }
 
   getUserById(userId: number): Observable<IUser> {
-    return this.http.get<IUser>(`${URLS.USERS}/${userId}`);
-  }
-
-  getPhotoById(id: number): Observable<IPhoto> {
-    return this.http.get<IPhoto>(`${URLS.PHOTOS}/${id}`);
+    return this.http.get<IUser>(`${URLS.USERS}/${userId}`).pipe(
+      catchError(err => throwError("Error the user ID doesn't exist"))
+    );
   }
 
   getPhotos(): void {
@@ -93,7 +95,8 @@ export class DataService {
     this.http.get<IPhoto[]>(URLS.PHOTOS)
       .pipe(
         tap(data => this.photosSubs.next(data)),
-        catchError(err => { return throwError(err) })).subscribe();
+        catchError(err => throwError(err))
+      ).subscribe();
 
   }
 }

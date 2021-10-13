@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
 import { Title } from '@angular/platform-browser';
+import { find, isNaN, isNil } from 'lodash';
 
 @Component({
   selector: 'app-user',
@@ -20,21 +21,30 @@ export class UserComponent implements OnInit {
     private service: DataService,
     private titleService: Title
   ) { 
-    
+    this.userID = Number(this.activatedRoute.snapshot.paramMap.get('userID'));
+    if (isNaN(this.userID)) {
+      this.userID = -1;
+    }
   }
 
   ngOnInit(): void {
-    this.userID = Number(this.activatedRoute.snapshot.paramMap.get('userID'));
+    this.getUser();
+    this.getPosts();
+  }
+
+  getUser(): void {
     this.service.getUserById(this.userID).subscribe(data => {
       this.user = data;
       this.titleService.setTitle(String(this.user.name));
-    });
+    });  
+  }
 
+  getPosts(): void {
     this.service.getPosts();
     this.service.posts$.subscribe(
       data => {
-        const res = data.find((a: IPost) => a.userId === this.userID)
-        if (typeof res === undefined) {
+        const res = find(data, ['userId', this.userID])
+        if (isNil(res)) {
           this.hasPosts = false;
         }
       }

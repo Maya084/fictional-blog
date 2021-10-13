@@ -33,7 +33,6 @@ export class LocalStorageService {
     } catch (error) {
       console.error(`Unable to get favorites from localStorage ex: ${error}`);
     }
-
   }
 
   getFavoriteValue(): number[] {
@@ -47,6 +46,7 @@ export class LocalStorageService {
   }
 
   unfavoritePost(postid: number): void {
+    if (isNil(postid)) { return; }
     let favorites = [...this.favoritesSubs.getValue()];
     let index = favorites.indexOf(postid);
     favorites.splice(index, 1);

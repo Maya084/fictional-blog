@@ -1,34 +1,31 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { LocalStorageService } from 'src/app/local-storage.service';
+import { Component, Input } from '@angular/core';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 
 @Component({
   selector: 'app-favorite-post',
   template: `
-    <button (click)="likePost(postid)" mat-icon-button class="example-icon favorite-icon"
+    <button (click)="favoritePost(postid)" mat-icon-button class="example-icon favorite-icon"
       aria-label="Example icon-button with heart icon">
-      <mat-icon class="heart-icon" [style.color]="isLiked(postid) ? '#ff4081' : 'black'" >favorite</mat-icon>
+      <mat-icon class="heart-icon" [style.color]="isFavorited(postid) ? '#ff4081' : 'black'" >favorite</mat-icon>
     </button>
   `,
   
 })
-export class FavoritePostComponent implements OnInit {
+export class FavoritePostComponent {
   @Input() postid:any;
 
   constructor(
-    private localStorageService: LocalStorageService
+    private service: LocalStorageService
   ) { }
 
-  ngOnInit() {
+  favoritePost(postid: number): void {
+    this.isFavorited(postid) ?
+      this.service.unfavoritePost(postid) :
+      this.service.favoritePost(postid);
   }
 
-  likePost(postid: number) {
-    this.isLiked(postid) ?
-      this.localStorageService.unfavoritePost(postid) :
-      this.localStorageService.favoritePost(postid);
-  }
-
-  isLiked(postid: number) {
-    return this.localStorageService.isFavorite(postid);
+  isFavorited(postid: number): boolean {
+    return this.service.isFavorite(postid);
   }
 
 }

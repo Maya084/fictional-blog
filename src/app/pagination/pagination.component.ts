@@ -50,7 +50,7 @@ export class PaginationComponent implements OnInit {
                     : this.currentPage - 2;
     
     const calculateTotal = this.total - cPage;
-    const checkIsLessThanLimitRange = calculateTotal <= 3;
+    const checkIsLessThanLimitRange = calculateTotal <= this.limitRange;
     
     // Generate list of number starting from 0 to 9 from Input just number 9
     this.rangeNumbers = Array.from({ length: this.total }, (_, i) => i + 1)

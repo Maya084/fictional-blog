@@ -6,7 +6,7 @@ import { ListUsersComponent } from './list-users/list-users.component';
 import { PostComponent } from './post/post.component';
 import { UserComponent } from './user/user.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   {path: 'posts', component: ListPostsComponent},
   {path: 'posts/:postID', component: PostComponent},
   {path: 'users', component:  ListUsersComponent},
@@ -25,5 +25,5 @@ export class AppRoutingModule { }
 export const routingComponents = [
   ListPostsComponent, 
   PostComponent, 
-  UserComponent
+  UserComponent, ListUsersComponent
 ];

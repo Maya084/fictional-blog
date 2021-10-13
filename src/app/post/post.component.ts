@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
 import { Title } from '@angular/platform-browser';
-import { LocalStorageService } from '../local-storage.service';
-import { map, mergeMap, withLatestFrom } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 

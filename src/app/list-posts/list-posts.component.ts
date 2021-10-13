@@ -3,9 +3,10 @@ import { IPost, IUser, IPhoto, IPostPaginated } from 'src/app/models/interfaces'
 import { DataService } from '../services/data.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
-import { LocalStorageService } from '../local-storage.service';
+import { LocalStorageService } from '../services/local-storage.service';
 import { Subscription } from 'rxjs';
 import { each, includes, isNil } from 'lodash';
+import { skipWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-list-posts',
@@ -25,7 +26,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   posts: IPost[] = [];
   users: IUser[] = [];
   photos: IPhoto[] = [];
-  isFavoriteUrl!:boolean;
+  isFavoriteUrl!: boolean;
   userSelected!: boolean;
 
   constructor(
@@ -38,7 +39,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.titleService.setTitle("Home");
     this.queryParams();
   }
-  
+
   queryParams() {
     const id: number = +this.acRoute?.snapshot?.params?.userID;
     this.postId = isNaN(id) ? null : id;
@@ -48,10 +49,14 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  getData(): void {
     this.dataService.getPosts();
 
     this.subs.ls = this.localStorageService.favorites$
-      .subscribe(_ => this.subscribePosts())
+      .subscribe((_: any) => this.subscribePosts())
 
     this.dataService.getUsers();
     this.subs.users = this.dataService.users$
@@ -60,6 +65,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.dataService.getPhotos();
     this.subs.photos = this.dataService.photos$
       .subscribe(data => this.photos = data);
+
   }
 
   ngOnDestroy(): void {
@@ -69,27 +75,27 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   subscribePosts(): void {
     this.subs?.posts?.unsubscribe();
     this.subs.posts = this.dataService.posts$
-      .subscribe(data => {
-        if (data.length === 0) { return; }
+      .pipe(skipWhile(data => data?.length === 0))
+      .subscribe(data => this.onSetPosts(data))
+  }
 
-        this.isFavoriteUrl = includes(this.router.url, 'favorites');
+  onSetPosts(data: IPost[]): void {
+    this.isFavoriteUrl = includes(this.router.url, 'favorites');
 
-        if (isNil(this.postId) && !this.isFavoriteUrl) {
-          const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
-          this.posts = postObj.data;
-          this.postPage = postObj.page;
-          this.postTotal = postObj.total;
-          this.onInitializePosts = true;
-          return;
-        }
+    if (isNil(this.postId) && !this.isFavoriteUrl) {
+      const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
+      this.posts = postObj?.data;
+      this.postPage = postObj?.page;
+      this.postTotal = postObj?.total;
+      this.onInitializePosts = true;
+      return;
+    }
 
-        this.posts = this.isFavoriteUrl
-          ? data.filter((el: IPost) => this.localStorageService.getFavoriteValue().includes(el.id))
-          : data.filter((el: IPost) => el.userId === this.postId);
+    this.posts = this.isFavoriteUrl
+      ? data.filter((el: IPost) => this.localStorageService.getFavoriteValue().includes(el.id))
+      : data.filter((el: IPost) => el.userId === this.postId);
 
-        this.userSelected = !this.isFavoriteUrl;
-        console.log(this.userSelected, this.isFavoriteUrl);
-      })
+    this.userSelected = !this.isFavoriteUrl;
   }
 
   openPost(post: IPost): void {
@@ -100,6 +106,8 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.postPage = page;
     this.router.navigate(['/posts'], { queryParams: { page: this.postPage } });
     const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
+    console.log('postObj', postObj);
+
     this.posts = postObj.data;
     this.postPage = postObj.page;
     this.postTotal = postObj.total;

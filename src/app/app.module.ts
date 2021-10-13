@@ -15,6 +15,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoritePostComponent } from './list-posts/favorite-post/favorite-post.component';
 import { PaginationComponent } from './pagination/pagination.component';
 
+import {TranslateModule} from '@ngx-translate/core';
+
 @NgModule({
   declarations: [	
     AppComponent,
@@ -33,7 +35,8 @@ import { PaginationComponent } from './pagination/pagination.component';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

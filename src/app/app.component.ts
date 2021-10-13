@@ -9,4 +9,9 @@ export class AppComponent {
   constructor() {
   }
 
+  // changeLanguage(lang:any)
+  // {
+  //   console.log(lang);
+  // }
+
 }
