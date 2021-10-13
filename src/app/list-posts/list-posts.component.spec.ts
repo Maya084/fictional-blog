@@ -5,6 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { IPost } from '../models/interfaces';
 import { DataService } from '../services/data.service';
+import { LocalStorageService } from '../services/local-storage.service';
 import { ListPostsComponent } from './list-posts.component';
 
 
@@ -34,7 +35,8 @@ describe('ListPostsComponent', () => {
       imports: [RouterTestingModule],
       declarations: [ListPostsComponent],
       providers: [
-        { provide: DataService, useValue: dataServiceSpy }
+        { provide: DataService, useValue: dataServiceSpy },
+        
       ]
     }).compileComponents();
 
@@ -81,13 +83,20 @@ describe('ListPostsComponent', () => {
     expect(unsubscribeSpy).toHaveBeenCalled();
   });
 
-  // it('should test onSetPosts', ()=>{
-  //   spyOnProperty(router, 'url', 'get').and.returnValue('favorites');
-  //   const pom = [mockPost, mockPost];
-  //   component.onSetPosts(pom);
-  //   expect(component.isFavoriteUrl).toEqual(true);
-  //   expect(dataServiceSpy.getPaginatedPosts).toHaveBeenCalled();
-  // })
+  it('should test onSetPosts for path favorites', () => {
+    spyOnProperty(router, 'url', 'get').and.returnValue('favorites');
+    const pom = [mockPost, mockPost];
+    component.onSetPosts(pom);
+    expect(component.isFavoriteUrl).toEqual(true);
+  })
+
+  it('should test onSetPosts for path NOT favorites', () => {
+    spyOnProperty(router, 'url', 'get').and.returnValue(' ');
+    const pom = [mockPost, mockPost];
+    component.onSetPosts(pom);
+    expect(component.isFavoriteUrl).toEqual(false);
+    expect(dataServiceSpy.getPaginatedPosts).toHaveBeenCalled();
+  })
 
   // it('should test subscribe posts for path favorites', () => {
   //   const mockedPosts = [{
