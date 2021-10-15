@@ -1,11 +1,11 @@
 /* tslint:disable:no-unused-variable */
-import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
-import { IPost } from '../models/interfaces';
+import { IPost, IPostPaginated } from '../models/interfaces';
 import { DataService } from '../services/data.service';
-import { LocalStorageService } from '../services/local-storage.service';
 import { ListPostsComponent } from './list-posts.component';
 
 
@@ -36,8 +36,9 @@ describe('ListPostsComponent', () => {
       declarations: [ListPostsComponent],
       providers: [
         { provide: DataService, useValue: dataServiceSpy },
-        
-      ]
+
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     router = TestBed.inject(Router);
@@ -50,8 +51,6 @@ describe('ListPostsComponent', () => {
   });
 
   it('should create', () => {
-    // dataServiceSpy.users$ = of([]);
-    // fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
@@ -76,26 +75,64 @@ describe('ListPostsComponent', () => {
   it('should test subscribe posts for path favorites when data length is 0', () => {
     const unsubscribeSpy = spyOn<any>(component['subs']['posts'], 'unsubscribe');
     const spySetPosts = spyOn<any>(component, 'onSetPosts')
+
     component.subscribePosts();
+
     dataServiceSpy.posts$.subscribe((_: any) => {
       expect(spySetPosts).not.toHaveBeenCalled();
     });
     expect(unsubscribeSpy).toHaveBeenCalled();
   });
 
+  it('should test subscribe posts for path favorites when data length is > 0', () => {
+    const unsubscribeSpy = spyOn<any>(component['subs']['posts'], 'unsubscribe');
+    const spySetPosts = spyOn<any>(component, 'onSetPosts')
+    dataServiceSpy.posts$ = of(
+      [{
+        "userId": 1,
+        "id": 1,
+        "title": "sunt aut facere repellat provident occaecati excepturi optio reprehenderit",
+        "body": "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto"
+      }]);
+    component.subscribePosts();
+
+    dataServiceSpy.posts$.subscribe((_: any) => {
+      expect(spySetPosts).toHaveBeenCalled();
+    });
+    expect(unsubscribeSpy).toHaveBeenCalled();
+  });
+
+  it('should test onSetPosts for path posts and there is no id', () => {
+    spyOnProperty(router, 'url', 'get').and.returnValue('posts');
+    const expectedData = [mockPost];
+    dataServiceSpy.getPaginatedPosts.and.returnValue({
+      data: expectedData,
+      page: 1,
+      total: Math.ceil(expectedData.length / 1)
+    } as IPostPaginated);
+
+    component.onSetPosts(expectedData);
+    expect(component.posts.length).toEqual(1);
+    expect(component.postPage).toEqual(1);
+    expect(component.isFavoriteUrl).toEqual(false);
+    expect(dataServiceSpy.getPaginatedPosts).toHaveBeenCalled();
+  })
+
   it('should test onSetPosts for path favorites', () => {
     spyOnProperty(router, 'url', 'get').and.returnValue('favorites');
-    const pom = [mockPost, mockPost];
+    const pom = [mockPost];
     component.onSetPosts(pom);
     expect(component.isFavoriteUrl).toEqual(true);
+    expect(dataServiceSpy.getPaginatedPosts).not.toHaveBeenCalled();
   })
 
   it('should test onSetPosts for path NOT favorites', () => {
-    spyOnProperty(router, 'url', 'get').and.returnValue(' ');
-    const pom = [mockPost, mockPost];
+    spyOnProperty(router, 'url', 'get').and.returnValue('posts');
+    component.postId = 1;
+    const pom = [mockPost];
     component.onSetPosts(pom);
     expect(component.isFavoriteUrl).toEqual(false);
-    expect(dataServiceSpy.getPaginatedPosts).toHaveBeenCalled();
+    expect(dataServiceSpy.getPaginatedPosts).not.toHaveBeenCalled();
   })
 
   // it('should test subscribe posts for path favorites', () => {

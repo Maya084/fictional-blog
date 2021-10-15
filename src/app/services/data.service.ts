@@ -14,6 +14,7 @@ export class DataService {
   private hasRequestedPosts = false;
   private hasRequestedUsers = false;
   private hasRequestedPhotos = false;
+  
   private postsSubs = new BehaviorSubject<IPost[]>([]);
   posts$ = this.postsSubs.asObservable();
 
@@ -23,18 +24,14 @@ export class DataService {
   private photosSubs = new BehaviorSubject<IPhoto[]>([]);
   photos$ = this.photosSubs.asObservable();
 
-
-
-  constructor(private http: HttpClient) {
-
-  }
+  constructor(private http: HttpClient) {}
 
   // checkPostsForUpdates() {
   //   this.hasRequested = false;
   //   this.getPosts();
   // }
 
-  getPaginatedPosts(page: number, limit = 10): IPostPaginated {
+  getPaginatedPosts(page: number, limit = 12): IPostPaginated {
     const postLists = [...this.postsSubs.value];
     const result = postLists.slice((page - 1) * limit, page * limit);
     return {
@@ -57,8 +54,7 @@ export class DataService {
         catchError(err => {
           return throwError(err)
         })
-      ).subscribe();
-
+      ).subscribe({ error: () => {} });
   }
 
   getUsers(): void {
@@ -69,7 +65,7 @@ export class DataService {
       .pipe(
         tap(data => this.usersSubs.next(data)),
         catchError(err => { return throwError(err) }))
-      .subscribe();
+      .subscribe({ error: () => {} });
   }
 
   getPostById(postId: number): Observable<IPost> {
@@ -96,7 +92,7 @@ export class DataService {
       .pipe(
         tap(data => this.photosSubs.next(data)),
         catchError(err => throwError(err))
-      ).subscribe();
+      ).subscribe({ error: () => {} });
 
   }
 }

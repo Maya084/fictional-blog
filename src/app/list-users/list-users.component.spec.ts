@@ -1,5 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -16,7 +17,8 @@ describe('ListUsersComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule
       ],
-      declarations: [ListUsersComponent]
+      declarations: [ListUsersComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
 

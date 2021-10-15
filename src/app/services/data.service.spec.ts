@@ -19,6 +19,7 @@ describe('DataService', () => {
       schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();
+
     service = TestBed.inject(DataService);
     httpClient = TestBed.inject(HttpClient);
     httpMock = TestBed.inject(HttpTestingController);
@@ -31,8 +32,21 @@ describe('DataService', () => {
     expect(service['hasRequestedPosts']).toEqual(false);
   });
 
-  it('should test function getPosts', () => {
+  it('should test function getPaginatedPosts', () => {
+    service['postsSubs'].next([]);
+    const a = service.getPaginatedPosts(1, 3);
+    expect(a.page).toEqual(1);
+  })
 
+  /*
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  *-------------------------------getPosts------------------------------
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  */
+
+  it('should test function getPosts', () => {
     const dummyData: IPost[] = [
       {
         "userId": 1,
@@ -49,18 +63,80 @@ describe('DataService', () => {
 
     expect(service['postsSubs'].value.length).toEqual(1);
     expect(httpGetSpy).toHaveBeenCalled();
+    expect(service['hasRequestedPosts']).toEqual(true);
   });
 
   it('should test function getPosts when throw an error', () => {
     const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
       .and.returnValue(throwError('Server error occured!'));
 
-    service.getPhotos();
+    service.getPosts();
 
-    expect(service['photosSubs'].value.length).toEqual(0);
+    expect(service['postsSubs'].value.length).toEqual(0);
     expect(httpGetSpy).toHaveBeenCalled();
-
   });
+
+  /*
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  *------------------------------getUsers-------------------------------
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  */
+  it('should test function getUsers', () => {
+    const dummyData: IUser[] = [
+      {
+        "id": 1,
+        "name": "Leanne Graham",
+        "username": "Bret",
+        "email": "Sincere@april.biz",
+        "address": {
+          "street": "Kulas Light",
+          "suite": "Apt. 556",
+          "city": "Gwenborough",
+          "zipcode": "92998-3874",
+          "geo": {
+            "lat": "-37.3159",
+            "lng": "81.1496"
+          }
+        },
+        "phone": "1-770-736-8031 x56442",
+        "website": "hildegard.org",
+        "company": {
+          "name": "Romaguera-Crona",
+          "catchPhrase": "Multi-layered client-server neural-net",
+          "bs": "harness real-time e-markets"
+        }
+      }
+    ];
+
+    const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
+      .and.returnValue(of(dummyData));
+
+    service.getUsers();
+
+    expect(service['usersSubs'].value.length).toEqual(1);
+    expect(httpGetSpy).toHaveBeenCalled();
+    expect(service['hasRequestedUsers']).toEqual(true);
+  });
+
+
+  it('should test function getUsers when an error is thrown', () => {
+    const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
+      .and.returnValue(throwError('Server error occured!'));
+
+    service.getUsers();
+
+    expect(service['usersSubs'].value.length).toEqual(0);
+    expect(httpGetSpy).toHaveBeenCalled();
+  });
+  /*
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  *---------------------------getPostById-------------------------------
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  */
 
   it('should test function getPostById', () => {
     const dummyPost: IPost = {
@@ -78,6 +154,28 @@ describe('DataService', () => {
     expect(request.request.method).toBe('GET');
     request.flush(dummyPost);
   });
+
+  it('should test function getPostById when an error is thrown', () => {
+    const dummyPostId = 1
+    const msgError = "Error the post ID doesn't exist";
+
+    service.getPostById(dummyPostId).subscribe({
+      error: (error) =>  {
+        expect(error).toEqual(msgError);
+      }}
+    );
+
+    const request = httpMock.expectOne(`${URLS.POSTS}/${dummyPostId}`);
+    expect(request.request.method).toBe('GET');
+    request.flush(msgError, { status: 404, statusText: 'Not Found' });
+  });
+  /*
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  *------------------------------getCommentById-------------------------
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  */
 
   it('should test function getCommentById', () => {
     const dummyComment: IComment[] = [
@@ -105,9 +203,35 @@ describe('DataService', () => {
     expect(request.request.method).toBe('GET');
     request.flush(dummyComment);
   });
+
+  it('should test function getCommentsById when an error is thrown', () => {
+    const dummyComment: IComment = {
+      "postId": 1,
+      "id": 1,
+      "name": "id labore ex et quam laborum",
+      "email": "Eliseo@gardner.biz",
+      "body": "laudantium enim quasi est quidem magnam voluptate ipsam eos\ntempora quo necessitatibus\ndolor quam autem quasi\nreiciendis et nam sapiente accusantium"
+    }
+    const msgError = "Error the comment ID doesn't exist";
+
+    service.getCommentsById(dummyComment.postId).subscribe({
+      error: (error) =>  {
+        expect(error).toEqual(msgError);
+      }}
+    );
+
+    const request = httpMock.expectOne(`${URLS.POSTS}/${dummyComment.postId}/comments`);
+    expect(request.request.method).toBe('GET');
+    request.flush(msgError, { status: 404, statusText: 'Not Found' });
+  });
+
   /*
-   *---------------------------------------------------------------------
-   */
+ *---------------------------------------------------------------------
+ *---------------------------------------------------------------------
+ *--------------------------getUserById--------------------------------
+ *---------------------------------------------------------------------
+ *---------------------------------------------------------------------
+ */
 
   it('should test function getUserById', () => {
     const dummyUser: IUser = {
@@ -142,9 +266,7 @@ describe('DataService', () => {
     request.flush(dummyUser);
   });
 
-
-
-  it('should test function getUserById when throw an error', () => {
+  it('should test function getUserById when an error is thrown', () => {
     const dummyUser: IUser = {
       "id": 1,
       "name": "Leanne Graham",
@@ -170,10 +292,10 @@ describe('DataService', () => {
     }
     const msgError = "Error the user ID doesn't exist";
 
-    service.getUserById(dummyUser.id).subscribe(
-      (error: any) => {
+    service.getUserById(dummyUser.id).subscribe({
+      error: (error) =>  {
         expect(error).toEqual(msgError);
-      }
+      }}
     );
 
     const request = httpMock.expectOne(`${URLS.USERS}/${dummyUser.id}`);
@@ -181,9 +303,13 @@ describe('DataService', () => {
     request.flush(msgError, { status: 404, statusText: 'Not Found' });
   });
 
-  /**
-   * ----------------------------------------------------------------
-   */
+  /*
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  *------------------------------getPhotos------------------------------
+  *---------------------------------------------------------------------
+  *---------------------------------------------------------------------
+  */
 
   it('should test function getPhotos', () => {
     const dummyData: IPhoto[] = [{
@@ -203,15 +329,16 @@ describe('DataService', () => {
     expect(httpGetSpy).toHaveBeenCalled();
   });
 
-  it('should test function getPhotos when throw an error', () => {
+  it('should test function getPhotos when an error is thrown', () => {
     const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
-      .and.returnValue(throwError('There occurred a server error!'));
+      .and.returnValue(throwError('Server error occured!'));
 
     service.getPhotos();
 
     expect(service['photosSubs'].value.length).toEqual(0);
     expect(httpGetSpy).toHaveBeenCalled();
   });
+
 
   // it('should test function getPhotos if previously called', () => {
   //   const dummyData: IPhoto[] = [{
@@ -233,6 +360,7 @@ describe('DataService', () => {
 
   afterEach(() => {
     httpMock.verify();
+    TestBed.resetTestingModule();
   });
 
 });

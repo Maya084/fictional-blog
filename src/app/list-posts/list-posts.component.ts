@@ -22,7 +22,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
 
   onInitializePosts = false;
   postTotal!: number;
-  totalPost = 6;
+  totalPost = 12;
   posts: IPost[] = [];
   users: IUser[] = [];
   photos: IPhoto[] = [];
@@ -106,7 +106,6 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.postPage = page;
     this.router.navigate(['/posts'], { queryParams: { page: this.postPage } });
     const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);
-    console.log('postObj', postObj);
 
     this.posts = postObj.data;
     this.postPage = postObj.page;

@@ -2,6 +2,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FavoritePostComponent } from './favorite-post.component';
 import { LocalStorageService } from 'src/app/services/local-storage.service';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('FavoritePostComponent', () => {
   let component: FavoritePostComponent;
@@ -10,7 +11,8 @@ describe('FavoritePostComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FavoritePostComponent]
+      declarations: [FavoritePostComponent],
+      schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
 
     service = TestBed.inject(LocalStorageService);

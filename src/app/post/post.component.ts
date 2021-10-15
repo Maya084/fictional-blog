@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
 import { Title } from '@angular/platform-browser';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 
@@ -28,17 +28,20 @@ export class PostComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.getPost();
+  }
+
+  getPost(): void {
     this.postId = Number(this.activatedRoute.snapshot.params?.postID);
     if (Number.isNaN(this.postId)) { this.postId = -1; }
-    
+
     this.postSubs = this.postService.getPostById(this.postId)
       .pipe(
-        mergeMap(data => {
+        switchMap(data => {
           this.post = data;
           this.titleService.setTitle(this.post.title);
-
           return this.postService.getUserById(data.userId)
-        })
+        }),
       ).subscribe(user => this.user = user);
   }
 

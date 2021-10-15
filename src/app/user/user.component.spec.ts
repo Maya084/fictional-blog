@@ -1,5 +1,6 @@
 /* tslint:disable:no-unused-variable */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
@@ -11,6 +12,29 @@ describe('UserComponent', () => {
   let fixture: ComponentFixture<UserComponent>;
   let dataService: DataService;
 
+  // describe('', () => {
+  //   beforeEach(() => {
+  //     TestBed.configureTestingModule({
+  //       imports: [RouterTestingModule],
+  //       declarations: [ListPostsComponent],
+  //       providers: [
+  //         { provide: ActivatedRoute, useValue: { params: of([{ userID: 'testPathNaN' }]), }, },
+  //       ]
+  //     }).compileComponents();
+
+  //   });
+
+  //   beforeEach(() => {
+  //     TestBed.inject(ActivatedRoute);
+  //   });
+
+  //   it('should test for activated route', () => {
+  //     fixture = TestBed.createComponent(ListPostsComponent);
+  //     component = fixture.componentInstance;
+  //     fixture.detectChanges();
+  //   })
+  // })
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -18,7 +42,8 @@ describe('UserComponent', () => {
         RouterTestingModule
       ],
       declarations: [UserComponent],
-      providers: [DataService]
+      providers: [DataService],
+      schemas: [NO_ERRORS_SCHEMA]
     })
       .compileComponents();
   });
@@ -34,7 +59,7 @@ describe('UserComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should test subscribe method in ngOnInit', fakeAsync(() => {
+  it('should test subscribe method in getUser', fakeAsync(() => {
     const mockUser = {
       "id": 1,
       "name": "Leanne Graham",
@@ -59,20 +84,23 @@ describe('UserComponent', () => {
       }
     }
     let getUserByIdSpy = spyOn(dataService, 'getUserById').and.returnValue(of(mockUser));
-    let SubSpy = spyOn(dataService.getUserById(mockUser.id), 'subscribe');
+    let SubSpy = spyOn(dataService.getUserById(mockUser.id), 'subscribe')
+    let spyTitle = spyOn(component['titleService'], 'setTitle');
 
     component.getUser();
 
     tick();
     expect(getUserByIdSpy).toHaveBeenCalledBefore(SubSpy);
     expect(SubSpy).toHaveBeenCalled();
+    dataService.getUserById(mockUser.id).subscribe((_: any) => {
+      expect(spyTitle).toHaveBeenCalled();
+    })
 
   }));
 
-
-  it('should test execution withing subscribe', () => {
+  it('should test execution within subscribe', () => {
     component.getUser();
-    expect(component.user).toBeDefined();
-    
+    expect(component.user).toEqual(jasmine.anything())
   })
+
 });
