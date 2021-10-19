@@ -2,16 +2,16 @@
   <mat-card class="flex-box">
 
     <div class="col">
-        <mat-icon> person</mat-icon>
+      <mat-icon class="user"> person</mat-icon>
     </div>
     <div class="col">
 
       <p class="name">{{user.name}}</p>
       <p class="username">@{{user.username}}</p>
-      <p class="email">{{user.email}}</p>
-      <p>Address: {{user.address?.street}}, {{user.address?.suite}}, {{user.address?.city}}</p>
-      <p>Company: {{user.company?.name}}</p>
-      <p color="primary">{{user.website}}</p>
+      <p class="email"> <mat-icon>email</mat-icon> <span> {{user.email}}</span></p>
+      <p class="address"><mat-icon>home</mat-icon>  {{user.address?.street}}, {{user.address?.suite}}, {{user.address?.city}}</p>
+      <p class="company"><mat-icon>business</mat-icon>  {{user.company?.name}}</p>
+      <p class="website">{{user.website}}</p>
     </div>
   </mat-card>
   <mat-divider></mat-divider>

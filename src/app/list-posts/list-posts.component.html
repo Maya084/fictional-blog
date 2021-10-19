@@ -20,7 +20,7 @@
         </mat-card-content>
         <mat-card-actions>
           <app-favorite-post [postid]="post.id"></app-favorite-post>
-          <button mat-stroked-button [routerLink]="['/posts', post.id]">READ MORE</button>
+          <button mat-stroked-button [routerLink]="['/posts', post.id]">{{'READ MORE' | translate}}</button>
         </mat-card-actions>
       </div>
     </mat-card>

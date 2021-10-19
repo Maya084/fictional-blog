@@ -7,6 +7,7 @@ import { LocalStorageService } from '../services/local-storage.service';
 import { Subscription } from 'rxjs';
 import { each, includes, isNil } from 'lodash';
 import { skipWhile } from 'rxjs/operators';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-posts',
@@ -34,9 +35,13 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     private router: Router,
     private acRoute: ActivatedRoute,
     private titleService: Title,
-    private localStorageService: LocalStorageService
+    private localStorageService: LocalStorageService,
+    private translate: TranslateService
   ) {
-    this.titleService.setTitle("Home");
+    translate.get('Home').subscribe(data=>
+      {
+        this.titleService.setTitle(data);
+      })
     this.queryParams();
   }
 

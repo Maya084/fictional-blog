@@ -17,6 +17,40 @@
         height: 200px;
         width: 150px;
       }
+
+      & .name {
+        font-weight: bold;
+        font-size: large;
+
+      }
+
+      & .username {
+        color: rgb(255, 64, 129);
+        font-size: medium;
+        // text
+      }
+
+      & .address,
+      .company,
+      .email {
+        display: flex;
+        align-items: center;
+        color: rgb(97, 96, 96);
+        font-size: 1rem;
+
+        & .mat-icon {
+          margin: 0;
+          font-size: medium;
+          height: auto;
+          width: auto;
+          margin-right: 1rem;
+        }
+      }
+
+      & .website{
+        color: rgb(127, 127, 233);
+      }
+
     }
   }
 }

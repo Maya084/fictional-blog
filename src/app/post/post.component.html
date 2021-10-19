@@ -1,17 +1,17 @@
 <div class="post" *ngIf="!postNotFound;else notFoundTmpl">
   <h1>{{ post.title }}
   </h1>
-  
-  <div> by: 
-    <span class="author"  routerLink="/users/{{post.userId}}" color="primary">{{user.name}}</span>
+
+  <div> {{'author'|translate}}:
+    <span class="author" routerLink="/users/{{post.userId}}" color="primary">{{user.name}}</span>
   </div>
-  
+
   <app-favorite-post [postid]="postId"></app-favorite-post>
   <p> {{post.body}}</p>
-  
+
   <mat-divider></mat-divider>
 
-  <h2> Comments</h2>
+  <h2>{{'Comments' | translate}}</h2>
   <app-comments-post></app-comments-post>
 </div>
 <router-outlet></router-outlet>

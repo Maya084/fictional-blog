@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CommentsPostComponent } from './post/comments-post/comments-post.component';
 import { ListUsersComponent } from './list-users/list-users.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,11 +15,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FavoritePostComponent } from './list-posts/favorite-post/favorite-post.component';
 import { PaginationComponent } from './pagination/pagination.component';
 
-import {TranslateModule} from '@ngx-translate/core';
 import { BlogInfoComponent } from './blog-info/blog-info.component';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
-  declarations: [		
+  declarations: [
     AppComponent,
     ...routingComponents,
     CommentsPostComponent,
@@ -27,8 +32,8 @@ import { BlogInfoComponent } from './blog-info/blog-info.component';
     ExamplesAngularComponent,
     FavoritePostComponent,
     PaginationComponent,
-      BlogInfoComponent
-   ],
+    BlogInfoComponent
+  ],
   imports: [
     BrowserModule,
     CommonModule,
@@ -38,7 +43,13 @@ import { BlogInfoComponent } from './blog-info/blog-info.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule.forRoot()
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
