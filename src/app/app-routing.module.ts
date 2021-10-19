@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BlogInfoComponent } from './blog-info/blog-info.component';
 import { ExamplesAngularComponent } from './examples-material/examples-angular.component';
 import { ListPostsComponent } from './list-posts/list-posts.component';
 import { ListUsersComponent } from './list-users/list-users.component';
@@ -13,6 +14,7 @@ export const routes: Routes = [
   {path: 'users/:userID', component: UserComponent},
   {path: 'material', component: ExamplesAngularComponent}, 
   {path: 'favorites', component: ListPostsComponent}, 
+  {path: 'info', component: BlogInfoComponent}, 
   {path: '**', redirectTo: 'posts', pathMatch:'full'},
 ];
 
@@ -25,5 +27,6 @@ export class AppRoutingModule { }
 export const routingComponents = [
   ListPostsComponent, 
   PostComponent, 
-  UserComponent, ListUsersComponent
+  UserComponent, ListUsersComponent,
+  BlogInfoComponent
 ];

@@ -16,7 +16,14 @@
     </button>
     <span>Maja Blog</span>
     <span class="nav-spacer"></span>
-    <button title="Info" mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+
+    <button mat-button>
+      EN
+    </button>
+
+    <button title="Info" mat-icon-button
+      [routerLink]="['/info']"
+      class="example-icon" aria-label="Example icon-button with share icon">
       <mat-icon>info</mat-icon>
     </button>
 

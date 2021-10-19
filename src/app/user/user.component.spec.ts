@@ -1,65 +1,22 @@
 /* tslint:disable:no-unused-variable */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of } from 'rxjs';
 import { DataService } from '../services/data.service';
 import { UserComponent } from './user.component';
 
-describe('UserComponent', () => {
-  let component: UserComponent;
-  let fixture: ComponentFixture<UserComponent>;
-  let dataService: DataService;
+describe('user componenet ', () => {
 
-  // describe('', () => {
-  //   beforeEach(() => {
-  //     TestBed.configureTestingModule({
-  //       imports: [RouterTestingModule],
-  //       declarations: [ListPostsComponent],
-  //       providers: [
-  //         { provide: ActivatedRoute, useValue: { params: of([{ userID: 'testPathNaN' }]), }, },
-  //       ]
-  //     }).compileComponents();
+  describe('UserComponent for valid url ', () => {
+    let component: UserComponent;
+    let fixture: ComponentFixture<UserComponent>;
+    let titleSpy: any;
+    let dataServiceSpy: any;
 
-  //   });
-
-  //   beforeEach(() => {
-  //     TestBed.inject(ActivatedRoute);
-  //   });
-
-  //   it('should test for activated route', () => {
-  //     fixture = TestBed.createComponent(ListPostsComponent);
-  //     component = fixture.componentInstance;
-  //     fixture.detectChanges();
-  //   })
-  // })
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        HttpClientTestingModule,
-        RouterTestingModule
-      ],
-      declarations: [UserComponent],
-      providers: [DataService],
-      schemas: [NO_ERRORS_SCHEMA]
-    })
-      .compileComponents();
-  });
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(UserComponent);
-    component = fixture.componentInstance;
-    dataService = TestBed.inject(DataService);
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  it('should test subscribe method in getUser', fakeAsync(() => {
     const mockUser = {
       "id": 1,
       "name": "Leanne Graham",
@@ -83,24 +40,95 @@ describe('UserComponent', () => {
         "bs": "harness real-time e-markets"
       }
     }
-    let getUserByIdSpy = spyOn(dataService, 'getUserById').and.returnValue(of(mockUser));
-    let SubSpy = spyOn(dataService.getUserById(mockUser.id), 'subscribe')
-    let spyTitle = spyOn(component['titleService'], 'setTitle');
 
-    component.getUser();
+    beforeEach(() => {
+      titleSpy = jasmine.createSpyObj('Title', ['setTitle']);
+      dataServiceSpy = jasmine.createSpyObj('DataService', ['getUserById', 'getPosts']);
+      
+      dataServiceSpy.getUserById.and.returnValue(of(mockUser));
+      dataServiceSpy.posts$ = of(mockUser);
 
-    tick();
-    expect(getUserByIdSpy).toHaveBeenCalledBefore(SubSpy);
-    expect(SubSpy).toHaveBeenCalled();
-    dataService.getUserById(mockUser.id).subscribe((_: any) => {
-      expect(spyTitle).toHaveBeenCalled();
-    })
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          RouterTestingModule
+        ],
+        declarations: [UserComponent],
+        providers: [{ provide: DataService, useValue: dataServiceSpy },
+        {
+          provide: ActivatedRoute,
+          useValue: { snapshot: { paramMap: { get: () => ({ userID: '1' }) } } },
+        },
+        { provide: Title, useValue: titleSpy },],
+        schemas: [NO_ERRORS_SCHEMA]
+      })
+        .compileComponents();
+    });
 
-  }));
+    beforeEach(() => {
+      fixture = TestBed.createComponent(UserComponent);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    });
 
-  it('should test execution within subscribe', () => {
-    component.getUser();
-    expect(component.user).toEqual(jasmine.anything())
-  })
+    it('should create', () => {
+      expect(component).toBeTruthy();
+    });
+
+    it('should test getUser', () => {
+      // let SubSpy = spyOn(dataService.getUserById(mockUser.id), 'subscribe')
+      component.getUser();
+
+      expect(dataServiceSpy.getUserById).toHaveBeenCalled();
+      expect(titleSpy.setTitle).toHaveBeenCalled();
+      // expect(SubSpy).toHaveBeenCalled();
+      // dataService.getUserById(mockUser.id).subscribe((_: any) => {
+      //   expect(titleSpy.setTitle).toHaveBeenCalled();
+      // })
+    });
+
+
+
+  });
+
+
+
+  describe('UserComponent for invalid url', () => {
+    let component: UserComponent;
+    let fixture: ComponentFixture<UserComponent>;
+    let dataService: DataService;
+
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        imports: [
+          HttpClientTestingModule,
+          RouterTestingModule
+        ],
+        declarations: [UserComponent],
+        providers: [DataService,
+          {
+            provide: ActivatedRoute,
+            useValue: { snapshot: { paramMap: { get: () => ({ userID: 'null' }) } } },
+          }],
+        schemas: [NO_ERRORS_SCHEMA],
+
+      })
+        .compileComponents();
+    });
+
+    beforeEach(() => {
+      fixture = TestBed.createComponent(UserComponent);
+      component = fixture.componentInstance;
+      dataService = TestBed.inject(DataService);
+      fixture.detectChanges();
+    });
+
+    it('should create', () => {
+      expect(component).toBeTruthy();
+      expect(component.userID).toEqual(-1);
+    });
+
+
+  });
 
 });

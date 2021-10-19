@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { componentFactoryName } from '@angular/compiler';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
@@ -76,6 +77,17 @@ describe('DataService', () => {
     expect(httpGetSpy).toHaveBeenCalled();
   });
 
+  it('should test function getPosts when nothing is returned', () => {
+    service['hasRequestedPosts'] = true;
+    service['postsSubs'].next([{} as any]);
+    const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
+
+    service.getPosts();
+
+    expect(service['postsSubs'].value.length).toEqual(1);
+    expect(httpGetSpy).not.toHaveBeenCalled();
+  });
+
   /*
   *---------------------------------------------------------------------
   *---------------------------------------------------------------------
@@ -130,6 +142,17 @@ describe('DataService', () => {
     expect(service['usersSubs'].value.length).toEqual(0);
     expect(httpGetSpy).toHaveBeenCalled();
   });
+
+  it('should test function getUsers when nothing is returned', () => {
+    service['hasRequestedUsers'] = true;
+    service['usersSubs'].next([{} as any]);
+    const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
+
+    service.getUsers();
+
+    expect(service['usersSubs'].value.length).toEqual(1);
+    expect(httpGetSpy).not.toHaveBeenCalled();
+  });
   /*
   *---------------------------------------------------------------------
   *---------------------------------------------------------------------
@@ -160,9 +183,10 @@ describe('DataService', () => {
     const msgError = "Error the post ID doesn't exist";
 
     service.getPostById(dummyPostId).subscribe({
-      error: (error) =>  {
+      error: (error) => {
         expect(error).toEqual(msgError);
-      }}
+      }
+    }
     );
 
     const request = httpMock.expectOne(`${URLS.POSTS}/${dummyPostId}`);
@@ -215,9 +239,10 @@ describe('DataService', () => {
     const msgError = "Error the comment ID doesn't exist";
 
     service.getCommentsById(dummyComment.postId).subscribe({
-      error: (error) =>  {
+      error: (error) => {
         expect(error).toEqual(msgError);
-      }}
+      }
+    }
     );
 
     const request = httpMock.expectOne(`${URLS.POSTS}/${dummyComment.postId}/comments`);
@@ -293,9 +318,10 @@ describe('DataService', () => {
     const msgError = "Error the user ID doesn't exist";
 
     service.getUserById(dummyUser.id).subscribe({
-      error: (error) =>  {
+      error: (error) => {
         expect(error).toEqual(msgError);
-      }}
+      }
+    }
     );
 
     const request = httpMock.expectOne(`${URLS.USERS}/${dummyUser.id}`);
@@ -337,6 +363,17 @@ describe('DataService', () => {
 
     expect(service['photosSubs'].value.length).toEqual(0);
     expect(httpGetSpy).toHaveBeenCalled();
+  });
+
+  it('should test function getPhotos when nothing is returned', () => {
+    service['hasRequestedPhotos'] = true;
+    service['photosSubs'].next([{} as IPhoto]);
+    const httpGetSpy: jasmine.Spy<any> = spyOn(httpClient, 'get')
+
+    service.getPhotos();
+
+    expect(service['photosSubs'].value.length).toEqual(1);
+    expect(httpGetSpy).not.toHaveBeenCalled();
   });
 
 

@@ -58,7 +58,7 @@ export class DataService {
   }
 
   getUsers(): void {
-    if (this.hasRequestedUsers && this.postsSubs.value.length != 0) { return; }
+    if (this.hasRequestedUsers && this.usersSubs.value.length != 0) { return; }
     this.hasRequestedUsers = true;
 
     this.http.get<IUser[]>(URLS.USERS)

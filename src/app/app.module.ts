@@ -16,16 +16,18 @@ import { FavoritePostComponent } from './list-posts/favorite-post/favorite-post.
 import { PaginationComponent } from './pagination/pagination.component';
 
 import {TranslateModule} from '@ngx-translate/core';
+import { BlogInfoComponent } from './blog-info/blog-info.component';
 
 @NgModule({
-  declarations: [	
+  declarations: [		
     AppComponent,
     ...routingComponents,
     CommentsPostComponent,
     ListUsersComponent,
     ExamplesAngularComponent,
     FavoritePostComponent,
-    PaginationComponent
+    PaginationComponent,
+      BlogInfoComponent
    ],
   imports: [
     BrowserModule,
