@@ -18,13 +18,14 @@ import { PaginationComponent } from './pagination/pagination.component';
 import { BlogInfoComponent } from './blog-info/blog-info.component';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-translate/core';
+import { SnackbarComponent } from './snackbar/snackbar.component';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
 
 @NgModule({
-  declarations: [
+  declarations: [	
     AppComponent,
     ...routingComponents,
     CommentsPostComponent,
@@ -32,8 +33,9 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ExamplesAngularComponent,
     FavoritePostComponent,
     PaginationComponent,
-    BlogInfoComponent
-  ],
+    BlogInfoComponent,
+      SnackbarComponent
+   ],
   imports: [
     BrowserModule,
     CommonModule,

@@ -3,9 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { DataService } from '../services/data.service';
 import { IPost, IUser } from '../models/interfaces';
 import { Title } from '@angular/platform-browser';
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
-
 
 @Component({
   selector: 'app-post',
@@ -42,7 +41,10 @@ export class PostComponent implements OnInit, OnDestroy {
           this.titleService.setTitle(this.post.title);
           return this.postService.getUserById(data.userId)
         }),
-      ).subscribe(user => this.user = user);
+      ).subscribe({
+        next: (user) => this.user = user,
+        error: (_) => {}
+      });
   }
 
   ngOnDestroy(): void {

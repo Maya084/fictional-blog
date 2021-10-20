@@ -3,17 +3,25 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { of } from 'rxjs';
 import { IPost, IPostPaginated } from '../models/interfaces';
 import { DataService } from '../services/data.service';
 import { ListPostsComponent } from './list-posts.component';
 
+export class TranslateServiceStub {
+  setDefaultLang(lang: string) { }
+  use(lang: string) { }
+  get onLangChange() { return of({lang: 'en'}) }
+  instant(key: string){}
+}
 
 describe('ListPostsComponent', () => {
   let component: ListPostsComponent;
   let fixture: ComponentFixture<ListPostsComponent>;
   let dataServiceSpy: any;
   let router: any;
+  
 
   const mockPost = {
     "userId": 1,
@@ -32,11 +40,13 @@ describe('ListPostsComponent', () => {
     dataServiceSpy.posts$ = of([]);
 
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule, 
+        // TranslateModule.forRoot(),
+      ],
       declarations: [ListPostsComponent],
       providers: [
         { provide: DataService, useValue: dataServiceSpy },
-
+        { provide: TranslateService, useClass: TranslateServiceStub },
       ],
       schemas: [NO_ERRORS_SCHEMA]
     }).compileComponents();
@@ -73,7 +83,7 @@ describe('ListPostsComponent', () => {
   })
 
   it('should test subscribe posts for path favorites when data length is 0', () => {
-    const unsubscribeSpy = spyOn<any>(component['subs']['posts'], 'unsubscribe');
+    const unsubscribeSpy = spyOn<any>(component['subc']['posts'], 'unsubscribe');
     const spySetPosts = spyOn<any>(component, 'onSetPosts')
 
     component.subscribePosts();
@@ -85,7 +95,7 @@ describe('ListPostsComponent', () => {
   });
 
   it('should test subscribe posts for path favorites when data length is > 0', () => {
-    const unsubscribeSpy = spyOn<any>(component['subs']['posts'], 'unsubscribe');
+    const unsubscribeSpy = spyOn<any>(component['subc']['posts'], 'unsubscribe');
     const spySetPosts = spyOn<any>(component, 'onSetPosts')
     dataServiceSpy.posts$ = of(
       [{

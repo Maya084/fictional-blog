@@ -16,7 +16,7 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class ListPostsComponent implements OnInit, OnDestroy {
 
-  private subs = {} as { [key: string]: Subscription };
+  private subc = {} as { [key: string]: Subscription };
 
   postId!: number | null;
   postPage = 1;
@@ -27,7 +27,7 @@ export class ListPostsComponent implements OnInit, OnDestroy {
   posts: IPost[] = [];
   users: IUser[] = [];
   photos: IPhoto[] = [];
-  isFavoriteUrl!: boolean;
+  isFavoriteUrl = includes(this.router.url, 'favorites');
   userSelected!: boolean;
 
   constructor(
@@ -36,12 +36,10 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     private acRoute: ActivatedRoute,
     private titleService: Title,
     private localStorageService: LocalStorageService,
-    private translate: TranslateService
+    private translate: TranslateService,
+    
   ) {
-    translate.get('Home').subscribe(data=>
-      {
-        this.titleService.setTitle(data);
-      })
+
     this.queryParams();
   }
 
@@ -53,39 +51,50 @@ export class ListPostsComponent implements OnInit, OnDestroy {
     this.postPage = isNaN(page) ? 1 : page;
   }
 
+  onSetTitle(): void {
+    let title = this.isFavoriteUrl ? 'Favorites'
+      : 'Home';
+    this.titleService.setTitle(this.translate.instant(title))
+  }
+
   ngOnInit(): void {
+    this.onSetTitle();
+    this.subc.langChange = this.translate.onLangChange.subscribe(
+      _ => this.onSetTitle()
+    );
+
     this.getData();
   }
 
   getData(): void {
     this.dataService.getPosts();
 
-    this.subs.ls = this.localStorageService.favorites$
+    this.subc.ls = this.localStorageService.favorites$
       .subscribe((_: any) => this.subscribePosts())
 
     this.dataService.getUsers();
-    this.subs.users = this.dataService.users$
+    this.subc.users = this.dataService.users$
       .subscribe(data => this.users = data);
 
     this.dataService.getPhotos();
-    this.subs.photos = this.dataService.photos$
+    this.subc.photos = this.dataService.photos$
       .subscribe(data => this.photos = data);
 
   }
 
   ngOnDestroy(): void {
-    each(this.subs, el => el?.unsubscribe())
+    each(this.subc, (el: Subscription) => el?.unsubscribe())
   }
 
   subscribePosts(): void {
-    this.subs?.posts?.unsubscribe();
-    this.subs.posts = this.dataService.posts$
+    this.subc?.posts?.unsubscribe();
+    this.subc.posts = this.dataService.posts$
       .pipe(skipWhile(data => data?.length === 0))
       .subscribe(data => this.onSetPosts(data))
   }
 
   onSetPosts(data: IPost[]): void {
-    this.isFavoriteUrl = includes(this.router.url, 'favorites');
+    // this.isFavoriteUrl = includes(this.router.url, 'favorites');
 
     if (isNil(this.postId) && !this.isFavoriteUrl) {
       const postObj = this.dataService.getPaginatedPosts(this.postPage, this.totalPost);

@@ -16,17 +16,10 @@
     <span>{{'Maya Blog' | translate}}</span>
     <span class="nav-spacer"></span>
 
-    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+    <button mat-icon-button [matMenuTriggerFor]="menu"
+      aria-label="Example icon-button with a menu">
       <mat-icon> translate</mat-icon>
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item (click)="changeLanguage('en')">
-        <span>{{'EN' | translate}}</span>
-      </button>
-      <button mat-menu-item (click)="changeLanguage('mk')">
-        <span>{{'MK' | translate}}</span>
-      </button>
-    </mat-menu>
 
     <button mat-icon-button routerLink='/info'>
       <mat-icon> info</mat-icon>
@@ -39,3 +32,12 @@
   </div>
 
 </mat-drawer-container>
+
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="changeLanguage('en')">
+    <span>{{'EN' | translate}}</span>
+  </button>
+  <button mat-menu-item (click)="changeLanguage('mk')">
+    <span>{{'MK' | translate}}</span>
+  </button>
+</mat-menu>

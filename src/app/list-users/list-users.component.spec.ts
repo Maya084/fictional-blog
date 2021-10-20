@@ -1,10 +1,12 @@
-/* tslint:disable:no-unused-variable */
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateServiceStub } from '../list-posts/list-posts.component.spec';
 import { ListUsersComponent } from './list-users.component';
+
 
 describe('ListUsersComponent', () => {
   let component: ListUsersComponent;
@@ -15,14 +17,18 @@ describe('ListUsersComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        TranslateModule.forRoot()
       ],
       declarations: [ListUsersComponent],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
+      providers: [
+        { provide: TranslateService, useClass: TranslateServiceStub },
+      ]
     })
       .compileComponents();
 
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
 
   });
 

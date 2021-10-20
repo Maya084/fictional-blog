@@ -1,6 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { throwError } from 'rxjs';
 import { LOCAL_STORAGE_KEY } from 'src/assets/constants';
 
 import { LocalStorageService } from './local-storage.service';
@@ -29,7 +28,6 @@ describe('LocalStorageService', () => {
       service.saveToLocalStorage();
 
       expect(window.localStorage.setItem).toHaveBeenCalled()
-
     });
 
     it('should test the function getLocalStorage', () => {
@@ -120,7 +118,6 @@ describe('LocalStorageService', () => {
 
 
     it('should test function isFavorite for post Ids that exist', () => {
-
       const mockedDataFavorites = [1, 2, 3];
       service['favoritesSubs'].next(mockedDataFavorites);
       let postId = 3;
@@ -138,7 +135,6 @@ describe('LocalStorageService', () => {
       const isFavorite = service.isFavorite(postId);
       expect(isFavorite).toEqual(false);
     })
-
 
   });
 

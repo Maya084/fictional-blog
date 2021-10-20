@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { each } from 'lodash';
+import { Subscription } from 'rxjs';
 import { IUser } from 'src/app/models/interfaces';
 import { DataService } from '../services/data.service';
 
@@ -10,7 +12,9 @@ import { DataService } from '../services/data.service';
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss']
 })
-export class ListUsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit, OnDestroy {
+
+  private subc = {} as {[key: string]: Subscription};
 
   users: IUser[] = [];
 
@@ -20,16 +24,25 @@ export class ListUsersComponent implements OnInit {
     private titleService: Title,
     private translate: TranslateService
   ) { 
-    translate.get('Users').subscribe(data=>
-      {
-        this.titleService.setTitle(data);
-      })
+   
+  }
+
+  onSetTitle(): void {
+    this.titleService.setTitle(this.translate.instant('Users'))
   }
 
   ngOnInit() {
+    this.onSetTitle();
+    this.subc.langChange = this.translate.onLangChange.subscribe(
+      val => this.onSetTitle()
+    );
+
     this.dataServ.getUsers();
     this.dataServ.users$.subscribe(data=> this.users = data);
+  }
 
+  ngOnDestroy(): void {
+    each(this.subc, (el: Subscription) => el?.unsubscribe())
   }
 
   openUserDetails(userID: any) {
