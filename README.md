@@ -6,7 +6,7 @@ Demo: https://maya084.github.io/fictional-blog/posts
 The blog fetches fake API data from [JSON Placeholder](https://jsonplaceholder.typicode.com/)
 
 ## Development 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.\
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.7.
 
 
 ### Clone repo
